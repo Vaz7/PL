@@ -1,11 +1,9 @@
 import ply.lex as lex
 
-#states = (
-#    ('o_list', 'inclusive'),
-#    ('c_list', 'inclusive'),
-#    ('o_table', 'inclusive'),
-#    ('c_table', 'inclusive'),
-#)
+states = (
+    ('olist', 'inclusive'),
+    ('otable', 'inclusive'),
+)
 
 tokens = (
     'KEY',
@@ -18,20 +16,37 @@ tokens = (
     'CPAR',
     'APAR2',
     'CPAR2',
-    'TAG_NAME'
+    'TAG_NAME',
+    'COMMA',
+    'DATE',
+    'TIME',
+    'DATETIME'
 )
 
 t_EQUALS = r'='
+t_COMMA = r','
 
 def t_COMMENT(t):
     r'\#.+'
     pass
 
-def t_VALUE(t):
-    r'".+"'
+def t_ANY_VALUE(t):
+    r'\".+\"'
     return t
 
-def t_NUMERIC(t):
+def t_DATETIME(t):
+    r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
+    return t
+
+def t_DATE(t):
+    r'\d+-\d{2}-\d{2}'
+    return t
+
+def t_TIME(t):
+    r'\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
+    return t
+
+def t_ANY_NUMERIC(t):
     r'(\+|-)?\d+\.?\d*'
     return t
 
@@ -45,9 +60,33 @@ def t_KEY(t):
 
     return t    
 
-t_ignore = ' \n\t\r'
+def t_APAR2(t):
+    r'\[\['
+    t.lexer.push_state('otable')
+    return t
 
-def t_error(t):
+def t_APAR(t):
+    r'\['
+    t.lexer.push_state('olist')
+    return t
+
+def t_otable_CPAR2(t):
+    r'\]\]'
+    t.lexer.pop_state()
+    return t
+
+def t_olist_CPAR(t):
+    r'\]'
+    t.lexer.pop_state()
+    return t
+
+def t_olist_otable_TAG_NAME(t):
+    r'([a-zA-Z0-9_.]+|\"[^\"]+\")'
+    return t
+
+t_ANY_ignore = ' \n\t\r'
+
+def t_ANY_error(t):
     print(f"Caracter inválido {t.value[0]}")
     t.lexer.skip(1)
 
@@ -59,6 +98,8 @@ title = "TOML Example"
 [owner]
 name = "Tom Preston-Werner"
 dob = 1979-05-27T07:32:00-08:00 # First class dates
+deb = 1979-05-27
+dab = 07:32:00UC
 
 [database]
 server = "192.168.1.1"
@@ -85,6 +126,10 @@ hosts = [
   "alpha",
   "omega"
 ]
+
+[[fruit]]
+name = "potato"
+flavour = 10
 """
 
 lexer = lex.lex()
