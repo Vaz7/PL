@@ -1,87 +1,64 @@
 import ply.lex as lex
 
-states = (
-    ('olist', 'inclusive'),
-    ('otable', 'inclusive'),
-)
-
 tokens = (
     'KEY',
-    'VALUE',
     'EQUALS',
     'BOOL',
     'NULL',
-    'NUMERIC',
+    'NUMERIC', # TODO: Partir isto em vários tipos de números (tipo REAL, INTEGER, SCIENTIFIC). Posso fazer tudo dentro da mesma func tho (pensar se vale a pena ou não reconhecer binário/octal/hexadecimal)
     'APAR',
     'CPAR',
     'APAR2',
     'CPAR2',
-    'TAG_NAME',
     'COMMA',
     'DATE',
-    'TIME',
-    'DATETIME'
+    'TIME',         # TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer# TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer))
+    'DATETIME',
+    'STRING'        # TODO: Inclui suporte para NaN e infinity
+    #'MULTILINE_STRING,
+    #'LITERAL_STRING',              # TODO: Fazer 2 estados para conseguir retirar os tokens de strings multiline (ver exercícios dos comentários das fichas PL)
+    #'MULTILINE_LITERAL_STRING'
 )
 
 t_EQUALS = r'='
 t_COMMA = r','
+t_APAR = r'\['
+t_CPAR = r'\]'
+t_APAR2 = r'\[\['
+t_CPAR2 = r'\]\]'
 
 def t_COMMENT(t):
     r'\#.+'
     pass
 
-def t_ANY_VALUE(t):
-    r'\".+\"'
+def t_BOOL(t):
+    r'true|false'
     return t
 
-def t_DATETIME(t):
+def t_NULL(t):
+    r'null'
+    return t
+
+def t_STRING(t):
+    r'\".+\"|[a-zA-Z_-][a-zA-Z_\-0-9]*(\.\".+\"|\.[a-zA-Z_0-9\-]+)*'
+    if t.value[0] != '\"':
+        t.type = 'KEY'
+    return t
+
+def t_ANY_DATETIME(t):
     r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
     return t
 
-def t_DATE(t):
+def t_ANY_DATE(t):
     r'\d+-\d{2}-\d{2}'
     return t
 
-def t_TIME(t):
+def t_ANY_TIME(t):
     r'\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
     return t
 
 def t_ANY_NUMERIC(t):
     r'(\+|-)?\d+\.?\d*'
-    return t
-
-def t_KEY(t):
-    r'\w+'
-
-    if t.value in ["true", "false"]:
-        t.type = 'BOOL'
-    elif t.value == 'null':
-        t.type = 'NULL'
-
-    return t    
-
-def t_APAR2(t):
-    r'\[\['
-    t.lexer.push_state('otable')
-    return t
-
-def t_APAR(t):
-    r'\['
-    t.lexer.push_state('olist')
-    return t
-
-def t_otable_CPAR2(t):
-    r'\]\]'
-    t.lexer.pop_state()
-    return t
-
-def t_olist_CPAR(t):
-    r'\]'
-    t.lexer.pop_state()
-    return t
-
-def t_olist_otable_TAG_NAME(t):
-    r'([a-zA-Z0-9_.]+|\"[^\"]+\")'
     return t
 
 t_ANY_ignore = ' \n\t\r'
@@ -94,8 +71,10 @@ data = """
 # This is a TOML document.
 
 title = "TOML Example"
+[1]
+testing = [2001-01-20]
 
-[owner]
+["owner"]
 name = "Tom Preston-Werner"
 dob = 1979-05-27T07:32:00-08:00 # First class dates
 deb = 1979-05-27
@@ -106,11 +85,12 @@ server = "192.168.1.1"
 ports = [ 8000, 8001, 8002 ]
 connection_max = 5000
 enabled = true
+type = null
 
 [servers]
 
   # Indentation (tabs and/or spaces) is allowed but not required
-  [servers.alpha]
+  [servers."alpha"."delta"]
   ip = "10.0.0.1"
   dc = "eqdc10"
 
