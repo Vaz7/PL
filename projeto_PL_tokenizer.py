@@ -5,14 +5,14 @@ tokens = (
     'EQUALS',
     'BOOL',
     'NULL',
-    'NUMERIC', # TODO: Partir isto em vários tipos de números (tipo REAL, INTEGER, SCIENTIFIC). Posso fazer tudo dentro da mesma func tho (pensar se vale a pena ou não reconhecer binário/octal/hexadecimal)
+    'NUMERIC', # TODO: Partir isto em vários tipos de números (tipo REAL, INTEGER, SCIENTIFIC). Posso fazer tudo dentro da mesma func tho (pensar se vale a pena)
     'APAR',
     'CPAR',
     'APAR2',
     'CPAR2',
     'COMMA',
     'DATE',
-    'TIME',         # TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer# TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer))
+    'TIME',         # TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer)
     'DATETIME',
     'STRING'        # TODO: Inclui suporte para NaN e infinity
     #'MULTILINE_STRING,
