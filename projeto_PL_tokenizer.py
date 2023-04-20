@@ -64,7 +64,7 @@ def t_STRING_LITERAL(t):
     return t
 
 def t_STRING(t):
-    r'\"[\sa-zA-Z0-9_.-]+\"|[a-zA-Z_-][a-zA-Z_\-0-9]*(\.\".+\"|\.[a-zA-Z_0-9\-]+)*' # Podemos ter que rever está expressão regular!
+    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(\.("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|\.[a-zA-Z_0-9\-]+)*' # Podemos ter que rever está expressão regular!
     if t.value[0] != '\"':
         t.type = 'KEY'
     return t
@@ -91,55 +91,10 @@ def t_ANY_error(t):
     print(f"Caracter inválido {t.value[0]}")
     t.lexer.skip(1)
 
-data = """
-# This is a TOML document.
+data = None
 
-title = "TOML Example"
-[1]
-testing = [2001-01-20]
-
-["owner"]
-name = "Tom Preston-Werner"
-dob = 1979-05-27T07:32:00-08:00 # First class dates
-deb = 1979-05-27
-dab = 07:32:00UC
-
-[database]
-server = "192.168.1.1"
-ports = [ 8000, 8001, 8002 ]
-connection_max = 5000
-enabled = true
-type = null
-sl = '  string literal'
-
-[servers]
-
-  # Indentation (tabs and/or spaces) is allowed but not required
-  [servers."alpha"."delta"]
-  ip = "10.0.0.1"
-  dc = "eqdc10"
-  inf = +infinity
-  n = -nan
-
-  [servers.beta]
-  ip = "10.0.0.2"
-  dc = "eqdc10"
-
-[clients]
-data = [ ["gamma", "delta"], [1, 2] ]
-
-# Line breaks are OK when inside arrays
-hosts = [
-  "alpha",
-  "omega"
-]
-
-inline = { test = "test", more = "more", name = null }
-
-[[fruit]]
-name = "potato"
-flavour = 10
-"""
+with open('test_file.toml') as file:
+    data = file.read()
 
 lexer = lex.lex()
 lexer.input(data)
