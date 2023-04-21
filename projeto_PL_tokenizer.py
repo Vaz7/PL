@@ -70,7 +70,7 @@ def t_STRING(t):
     return t
 
 def t_DATETIME(t):
-    r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
+    r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
     return t
 
 def t_DATE(t):
@@ -78,7 +78,7 @@ def t_DATE(t):
     return t
 
 def t_TIME(t):
-    r'\d{2}:\d{2}:\d{2}(-\d{2}:\d{2}|\w+)?'
+    r'\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
     return t
 
 def t_NUMERIC(t):
