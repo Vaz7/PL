@@ -1,5 +1,7 @@
 # This is a TOML document.
 
+test = 12_23_34.45_56_67e-2
+
 title = "TOML \"QUOTE\" Example"
 [1]
 testing = [2001-01-20]
