@@ -84,6 +84,7 @@ def t_TIME(t):
 def t_NUMERIC(t):
     #r'(\+|-)?\d+\.?\d*'
     r'(\+|-)?\d+(_\d+)*(\.\d+(_\d+)*)?([eE](\+|-)?\d+)?'
+    t.value = t.value.replace('_','')
     return t
 
 t_ANY_ignore = ' \n\t\r'
