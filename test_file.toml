@@ -2,6 +2,11 @@
 
 test = 12_23_34.45_56_67e-2
 
+binario = 0b11011011010
+octal = 0o1234567
+hexa = 0xFFFFF
+
+
 title = "TOML \"QUOTE\" Example"
 [1]
 testing = [2001-01-20]

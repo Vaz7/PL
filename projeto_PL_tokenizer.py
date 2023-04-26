@@ -5,13 +5,11 @@ tokens = (
     'EQUALS',
     'BOOL',
     'NULL',
-    'NUMERIC', # TODO: Partir isto em vários tipos de números (tipo REAL, INTEGER, SCIENTIFIC). Posso fazer tudo dentro da mesma func tho (pensar se vale a pena)
-    #'INTEGER',
-    #'FLOAT',
-    #'SCIENTIFIC_NOTATION',
-    #'BINARY',
-    #'OCTAL',
-    #'HEXA',
+    'INTEGER',
+    'FLOAT',
+    'BINARY',
+    'OCTAL',
+    'HEXA',
     'NAN',
     'INFINITY',
     'APAR',
@@ -38,6 +36,68 @@ t_APAR2 = r'\[\['
 t_CPAR2 = r'\]\]'
 t_ACHAV = r'\{'
 t_CCHAV = r'\}'
+
+def validDate(data):
+    data_separada = data.split('-')
+    if len(data_separada) != 3:
+        return False  # invalid format, must have exactly 3 parts separated by hyphens
+    try:
+        year = int(data_separada[0])
+        month = int(data_separada[1])
+        day = int(data_separada[2])
+    except ValueError:
+        return False  # could not convert parts to integers, invalid format
+    # check if year, month, and day are within valid ranges
+    if year < 1 or month < 1 or month > 12 or day < 1 or day > 31:
+        return False  # invalid values for year, month, or day
+    # check for valid number of days for the given month and year
+    if month in [4, 6, 9, 11] and day > 30:
+        return False  # April, June, September, and November have 30 days
+    if month == 2:
+        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+            if day > 29:
+                return False  # leap year has 29 days in February
+        else:
+            if day > 28:
+                return False  # non-leap year has 28 days in February
+    return True  # valid date
+
+import datetime
+
+def validDateTime(datetime_str):
+    try:
+        # split datetime string into its components
+        date_str, time_str = datetime_str.split('T')
+        year_str, month_str, day_str = date_str.split('-')
+        hour_str, minute_str, second_str = time_str.split(':')
+        second_parts = second_str.split('.')
+        second_int = int(second_parts[0])
+        microsecond_int = int(second_parts[1]) if len(second_parts) > 1 else 0
+
+        # parse date and time components into datetime object
+        dt = datetime.datetime(
+            year=int(year_str), month=int(month_str), day=int(day_str),
+            hour=int(hour_str), minute=int(minute_str), second=second_int,
+            microsecond=microsecond_int
+        )
+
+        # check for timezone offset
+        tz_offset_str = datetime_str[-1] if datetime_str[-1] in ['Z', 'z'] else datetime_str[-6:]
+        if tz_offset_str not in ['Z', 'z']:
+            tz_offset_str = tz_offset_str.replace(':', '')  # remove colon if present
+            tz_offset_hours = int(tz_offset_str[0] + tz_offset_str[1:3])
+            tz_offset_minutes = int(tz_offset_str[0] + tz_offset_str[3:])
+            tz_offset = datetime.timedelta(hours=tz_offset_hours, minutes=tz_offset_minutes)
+            dt += tz_offset
+
+        return True  # valid datetime
+
+    except (ValueError, IndexError):
+        return False  # invalid datetime format
+
+
+
+
 
 def t_COMMENT(t):
     r'\#.+'
@@ -71,15 +131,43 @@ def t_STRING(t):
 
 def t_DATETIME(t):
     r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
+    if not validDateTime(t.value): raise SyntaxError(f"Datetime {t.value} é inválido")
     return t
 
 def t_DATE(t):
     r'\d+-\d{2}-\d{2}'
+    if not validDate(t.value): raise SyntaxError(f"Data {t.value} é inválida")
     return t
 
 def t_TIME(t):
     r'\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
     return t
+
+
+def t_BINARY(t):
+    r'0[b|B][01]+'
+    return t
+
+def t_OCTAL(t):
+    r'0[o|O][0-7]+'
+    return t;
+
+def t_HEXA(t):
+    r'0[x|X][0-15A-F]+'
+    return t;
+
+def t_FLOAT(t):
+    r'(\+|-)?\d+(_\d+)*\.(\d+(_\d+)*)?([eE](\+|-)?\d+)?'
+    t.value = t.value.replace('_','')
+    return t
+
+def t_INTEGER(t):
+    r'(\+|-)?\d+(_\d+)*([eE](\+|-)?\d+)?'
+    t.value = t.value.replace('_','')
+    return t
+
+
+
 
 def t_NUMERIC(t):
     #r'(\+|-)?\d+\.?\d*'
@@ -101,5 +189,9 @@ with open('test_file.toml') as file:
 lexer = lex.lex()
 lexer.input(data)
 
+
 while tok := lexer.token():
-    print(tok)
+    try:
+        print(tok)
+    except SyntaxError as e:
+        print(f"Error : {str(e)}")
