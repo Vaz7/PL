@@ -13,7 +13,7 @@ testing = [2001-01-20]
 
 ["owner"]
 name = "Tom Preston-Werner"
-dob = 1979-05-27T07:32:00.999999+08:00z # First class dates
+dob = 0-05-27T07:32:00.999999+08:00z # First class dates
 deb = 1979-05-27
 dab = 07:32:00Z
 

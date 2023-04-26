@@ -1,4 +1,6 @@
 import ply.lex as lex
+import re
+import datetime
 
 tokens = (
     'KEY',
@@ -62,17 +64,26 @@ def validDate(data):
                 return False  # non-leap year has 28 days in February
     return True  # valid date
 
-import datetime
 
 def validDateTime(datetime_str):
     try:
         # split datetime string into its components
         date_str, time_str = datetime_str.split('T')
         year_str, month_str, day_str = date_str.split('-')
-        hour_str, minute_str, second_str = time_str.split(':')
+
+        offset = re.split(r'\+|-|z|z', time_str)
+        hour_str, minute_str, second_str = offset[0].split(':')
         second_parts = second_str.split('.')
         second_int = int(second_parts[0])
         microsecond_int = int(second_parts[1]) if len(second_parts) > 1 else 0
+
+        if len(offset) == 3 or len(offset) == 2 and offset[1] != '':
+            offset_hour, offset_min = offset[1].split(':')
+            offset_hour = int(offset_hour)
+            offset_min = int(offset_min)
+
+            if offset_hour < 0 or offset_hour > 24 or offset_min < 0 or offset_min > 59:
+                return False
 
         # parse date and time components into datetime object
         dt = datetime.datetime(
@@ -80,15 +91,6 @@ def validDateTime(datetime_str):
             hour=int(hour_str), minute=int(minute_str), second=second_int,
             microsecond=microsecond_int
         )
-
-        # check for timezone offset
-        tz_offset_str = datetime_str[-1] if datetime_str[-1] in ['Z', 'z'] else datetime_str[-6:]
-        if tz_offset_str not in ['Z', 'z']:
-            tz_offset_str = tz_offset_str.replace(':', '')  # remove colon if present
-            tz_offset_hours = int(tz_offset_str[0] + tz_offset_str[1:3])
-            tz_offset_minutes = int(tz_offset_str[0] + tz_offset_str[3:])
-            tz_offset = datetime.timedelta(hours=tz_offset_hours, minutes=tz_offset_minutes)
-            dt += tz_offset
 
         return True  # valid datetime
 
@@ -190,8 +192,13 @@ lexer = lex.lex()
 lexer.input(data)
 
 
-while tok := lexer.token():
+while True:
     try:
+        tok = lexer.token()
+
+        if not tok:
+            break
+        
         print(tok)
     except SyntaxError as e:
         print(f"Error : {str(e)}")
