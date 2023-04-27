@@ -1,6 +1,13 @@
 import ply.lex as lex
-import re
-import datetime
+import utils
+
+multiline_string_literal = ""
+multiline_string = ""
+
+states = (
+    ('multilineLiteral', 'exclusive'),
+    ('multilineString', 'exclusive'),
+)
 
 tokens = (
     'KEY',
@@ -20,12 +27,12 @@ tokens = (
     'CPAR2',
     'COMMA',
     'DATE',
-    'TIME',         # TODO: Ver documentação do toml (tenho de trocar umas coisas no último parâmetro do tempo, mas não é nada difícl de fazer)
+    'TIME',
     'DATETIME',
     'STRING',  
-    #'MULTILINE_STRING,
-    'STRING_LITERAL',              # TODO: Fazer 2 estados para conseguir retirar os tokens de strings multiline (ver exercícios dos comentários das fichas PL)
-    #'MULTILINE_STRING_LITERAL',
+    'MULTILINE_STRING',
+    'STRING_LITERAL',
+    'MULTILINE_STRING_LITERAL',
     'ACHAV',
     'CCHAV'
 )
@@ -38,68 +45,44 @@ t_APAR2 = r'\[\['
 t_CPAR2 = r'\]\]'
 t_ACHAV = r'\{'
 t_CCHAV = r'\}'
+t_MULTILINE_STRING_LITERAL = r"\'\'\'\'\'\'"
+t_MULTILINE_STRING = r'\"\"\"\"\"\"'
 
-def validDate(data):
-    data_separada = data.split('-')
-    if len(data_separada) != 3:
-        return False  # invalid format, must have exactly 3 parts separated by hyphens
-    try:
-        year = int(data_separada[0])
-        month = int(data_separada[1])
-        day = int(data_separada[2])
-    except ValueError:
-        return False  # could not convert parts to integers, invalid format
-    # check if year, month, and day are within valid ranges
-    if year < 1 or month < 1 or month > 12 or day < 1 or day > 31:
-        return False  # invalid values for year, month, or day
-    # check for valid number of days for the given month and year
-    if month in [4, 6, 9, 11] and day > 30:
-        return False  # April, June, September, and November have 30 days
-    if month == 2:
-        if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
-            if day > 29:
-                return False  # leap year has 29 days in February
-        else:
-            if day > 28:
-                return False  # non-leap year has 28 days in February
-    return True  # valid date
+def t_MULTILINE_STRING_open(t):
+    r'\"\"\"'
+    t.lexer.push_state('multilineString')
 
+def t_multilineString_leave(t):
+    r'\"\"\"'
+    global multiline_string
+    t.value = utils.set_up_multiline_string(multiline_string.strip('\n'))
+    multiline_string = ""
+    t.type = "MULTILINE_STRING"
+    t.lexer.pop_state()
+    return t
 
-def validDateTime(datetime_str):
-    try:
-        # split datetime string into its components
-        date_str, time_str = datetime_str.split('T')
-        year_str, month_str, day_str = date_str.split('-')
+def t_multilineString_MULTILINE_STRING(t):
+    r'(.|\n)+?'
+    global multiline_string
+    multiline_string = multiline_string + str(t.value)
 
-        offset = re.split(r'\+|-|z|z', time_str)
-        hour_str, minute_str, second_str = offset[0].split(':')
-        second_parts = second_str.split('.')
-        second_int = int(second_parts[0])
-        microsecond_int = int(second_parts[1]) if len(second_parts) > 1 else 0
+def t_MULTILINE_STRING_LITERAL_open(t):
+    r"\'\'\'"
+    t.lexer.push_state('multilineLiteral')
 
-        if len(offset) == 3 or len(offset) == 2 and offset[1] != '':
-            offset_hour, offset_min = offset[1].split(':')
-            offset_hour = int(offset_hour)
-            offset_min = int(offset_min)
+def t_multilineLiteral_leave(t):
+    r"\'\'\'"
+    global multiline_string_literal
+    t.value = multiline_string_literal.strip('\n')
+    multiline_string_literal = ""
+    t.type = "MULTILINE_STRING_LITERAL"
+    t.lexer.pop_state()
+    return t
 
-            if offset_hour < 0 or offset_hour > 24 or offset_min < 0 or offset_min > 59:
-                return False
-
-        # parse date and time components into datetime object
-        dt = datetime.datetime(
-            year=int(year_str), month=int(month_str), day=int(day_str),
-            hour=int(hour_str), minute=int(minute_str), second=second_int,
-            microsecond=microsecond_int
-        )
-
-        return True  # valid datetime
-
-    except (ValueError, IndexError):
-        return False  # invalid datetime format
-
-
-
-
+def t_multilineLiteral_MULTILINE_STRING_LITERAL(t):
+    r'(.|\n)+?'
+    global multiline_string_literal
+    multiline_string_literal = multiline_string_literal + str(t.value)
 
 def t_COMMENT(t):
     r'\#.+'
@@ -122,29 +105,34 @@ def t_INFINITY(t):
     return t
 
 def t_STRING_LITERAL(t):
-    r"'[\sa-zA-Z0-9_.-]+'"
+    r"'[^']*'"
     return t
 
 def t_STRING(t):
-    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(\.("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|\.[a-zA-Z_0-9\-]+)*' # Podemos ter que rever está expressão regular!
+    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(\.("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|\.[a-zA-Z_0-9\-]+)*'
     if t.value[0] != '\"':
         t.type = 'KEY'
+        if not utils.validKey(t.value):
+            raise SyntaxError(f"KEY {t.value} é inválida")
     return t
 
 def t_DATETIME(t):
     r'\d+-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
-    if not validDateTime(t.value): raise SyntaxError(f"Datetime {t.value} é inválido")
+    if not utils.validDateTime(t.value): 
+        raise SyntaxError(f"Datetime {t.value} é inválido")
     return t
 
 def t_DATE(t):
     r'\d+-\d{2}-\d{2}'
-    if not validDate(t.value): raise SyntaxError(f"Data {t.value} é inválida")
+    if not utils.validDate(t.value): 
+        raise SyntaxError(f"Data {t.value} é inválida")
     return t
 
 def t_TIME(t):
     r'\d{2}:\d{2}:\d{2}(\.\d+)?([\+|-]\d{2}:\d{2})?[zZ]?'
+    if not utils.validTime(t.value):
+        raise SyntaxError(f"Time {t.value} é inválido")
     return t
-
 
 def t_BINARY(t):
     r'0[b|B][01]+'
@@ -168,16 +156,8 @@ def t_INTEGER(t):
     t.value = t.value.replace('_','')
     return t
 
-
-
-
-def t_NUMERIC(t):
-    #r'(\+|-)?\d+\.?\d*'
-    r'(\+|-)?\d+(_\d+)*(\.\d+(_\d+)*)?([eE](\+|-)?\d+)?'
-    t.value = t.value.replace('_','')
-    return t
-
-t_ANY_ignore = ' \n\t\r'
+t_ignore = ' \n\t\r'
+t_multilineLiteral_ignore = ''
 
 def t_ANY_error(t):
     print(f"Caracter inválido {t.value[0]}")
@@ -191,7 +171,6 @@ with open('test_file.toml') as file:
 lexer = lex.lex()
 lexer.input(data)
 
-
 while True:
     try:
         tok = lexer.token()
@@ -201,4 +180,4 @@ while True:
         
         print(tok)
     except SyntaxError as e:
-        print(f"Error : {str(e)}")
+        print(f"Erro: {str(e)}")
