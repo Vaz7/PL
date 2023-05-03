@@ -1,0 +1,57 @@
+test = 12_23_34.45_56_67e-2
+
+binario = 0b11011011010
+octal = 0o1234567
+hexa = 0xFFFFF
+multiline_literal_empty = ''''''
+multiline_literal_inline = '''Hello there! General Kenobi'''
+multiline_literal = '''
+Hello there
+my sweet
+friend
+'''
+
+# The following strings are byte-for-byte equivalent:
+str1 = "The quick brown fox jumps over the lazy dog."
+
+str2 = """
+The quick brown \
+
+
+  fox jumps over \
+    the lazy dog."""
+
+str3 = """\
+       The quick brown \
+       fox jumps over \
+       the lazy dog.\
+       """
+
+str4 = """
+This is
+a string \
+  with alot of stuff
+      init
+"""
+
+title = "TOML \"QUOTE\" Example"
+
+
+name = "Tom Preston-Werner"
+dob = 2000-05-27T07:32:00.999999+08:00 # First class dates
+deb = 1979-05-27
+dab = 07:32:00Z
+
+testing = [2001-01-20]
+
+data = [ ["gamma", "delta"], [1, 2] ]
+hosts = [
+  "alpha",
+  "omega"
+]
+
+inline = { test = "test", more = "more", name = null }
+inline2 = { test = "test", more = ["more", "more2", "potato", "putato"], name = null }
+
+
+inline3 = { }
