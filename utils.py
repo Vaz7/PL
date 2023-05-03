@@ -113,11 +113,11 @@ def set_up_multiline_string(str):
             else:
                 if line != '':
                     line = line + '\n'
-                backslash = False
+                    backslash = False
 
             result = result + line
 
-        if str[-1] != '\n':
+        if result[-1] == '\n':
             result = result[:-1]
 
         return result
