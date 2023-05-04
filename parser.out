@@ -8,97 +8,120 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> converter
-Rule 1     converter -> atribs
-Rule 2     atribs -> atribs atrib
-Rule 3     atribs -> atrib
-Rule 4     atrib -> KEY EQUALS content
-Rule 5     content -> value
-Rule 6     content -> APAR arr_cont
-Rule 7     content -> ACHAV table_cont
-Rule 8     arr_cont -> CPAR
-Rule 9     arr_cont -> a_cont CPAR
-Rule 10    a_cont -> content
-Rule 11    a_cont -> a_cont COMMA content
-Rule 12    table_cont -> CCHAV
-Rule 13    table_cont -> t_cont CCHAV
-Rule 14    t_cont -> KEY EQUALS t_value
-Rule 15    t_cont -> t_cont COMMA KEY EQUALS t_value
-Rule 16    t_value -> value
-Rule 17    t_value -> APAR arr_cont
-Rule 18    value -> STRING
-Rule 19    value -> BOOL
-Rule 20    value -> NULL
-Rule 21    value -> INTEGER
-Rule 22    value -> FLOAT
-Rule 23    value -> BINARY
-Rule 24    value -> OCTAL
-Rule 25    value -> HEXA
-Rule 26    value -> NAN
-Rule 27    value -> INFINITY
-Rule 28    value -> DATE
-Rule 29    value -> TIME
-Rule 30    value -> DATETIME
-Rule 31    value -> MULTILINE_STRING
-Rule 32    value -> STRING_LITERAL
-Rule 33    value -> MULTILINE_STRING_LITERAL
+Rule 1     converter -> fileElems
+Rule 2     fileElems -> fileElems elem
+Rule 3     fileElems -> elem
+Rule 4     elem -> atrib
+Rule 5     elem -> table
+Rule 6     atrib -> KEY EQUALS content
+Rule 7     content -> value
+Rule 8     content -> APAR arr_cont
+Rule 9     content -> ACHAV table_cont
+Rule 10    arr_cont -> CPAR
+Rule 11    arr_cont -> a_cont CPAR
+Rule 12    a_cont -> content
+Rule 13    a_cont -> a_cont COMMA content
+Rule 14    table_cont -> CCHAV
+Rule 15    table_cont -> t_cont CCHAV
+Rule 16    t_cont -> KEY EQUALS t_value
+Rule 17    t_cont -> t_cont COMMA KEY EQUALS t_value
+Rule 18    t_value -> value
+Rule 19    t_value -> APAR arr_cont
+Rule 20    value -> STRING
+Rule 21    value -> BOOL
+Rule 22    value -> NULL
+Rule 23    value -> INTEGER
+Rule 24    value -> FLOAT
+Rule 25    value -> BINARY
+Rule 26    value -> OCTAL
+Rule 27    value -> HEXA
+Rule 28    value -> NAN
+Rule 29    value -> INFINITY
+Rule 30    value -> DATE
+Rule 31    value -> TIME
+Rule 32    value -> DATETIME
+Rule 33    value -> MULTILINE_STRING
+Rule 34    value -> STRING_LITERAL
+Rule 35    value -> MULTILINE_STRING_LITERAL
+Rule 36    table -> APAR tab_cont CPAR
+Rule 37    table -> table atrib
+Rule 38    tab_cont -> tab_cont DOT tab_cont2
+Rule 39    tab_cont -> KEY
+Rule 40    tab_cont -> STRING
+Rule 41    tab_cont -> INTEGER
+Rule 42    tab_cont2 -> KEY
+Rule 43    tab_cont2 -> STRING
+Rule 44    tab_cont2 -> INTEGER
 
 Terminals, with rules where they appear
 
-ACHAV                : 7
-APAR                 : 6 17
+ACHAV                : 9
+APAR                 : 8 19 36
 APAR2                : 
-BINARY               : 23
-BOOL                 : 19
-CCHAV                : 12 13
-COMMA                : 11 15
-CPAR                 : 8 9
+BINARY               : 25
+BOOL                 : 21
+CCHAV                : 14 15
+COMMA                : 13 17
+CPAR                 : 10 11 36
 CPAR2                : 
-DATE                 : 28
-DATETIME             : 30
-EQUALS               : 4 14 15
-FLOAT                : 22
-HEXA                 : 25
-INFINITY             : 27
-INTEGER              : 21
-KEY                  : 4 14 15
-MULTILINE_STRING     : 31
-MULTILINE_STRING_LITERAL : 33
-NAN                  : 26
-NULL                 : 20
-OCTAL                : 24
-STRING               : 18
-STRING_LITERAL       : 32
-TIME                 : 29
+DATE                 : 30
+DATETIME             : 32
+DOT                  : 38
+EQUALS               : 6 16 17
+FLOAT                : 24
+HEXA                 : 27
+INFINITY             : 29
+INTEGER              : 23 41 44
+KEY                  : 6 16 17 39 42
+MULTILINE_STRING     : 33
+MULTILINE_STRING_LITERAL : 35
+NAN                  : 28
+NULL                 : 22
+OCTAL                : 26
+STRING               : 20 40 43
+STRING_LITERAL       : 34
+TIME                 : 31
 error                : 
 
 Nonterminals, with rules where they appear
 
-a_cont               : 9 11
-arr_cont             : 6 17
-atrib                : 2 3
-atribs               : 1 2
-content              : 4 10 11
+a_cont               : 11 13
+arr_cont             : 8 19
+atrib                : 4 37
+content              : 6 12 13
 converter            : 0
-t_cont               : 13 15
-t_value              : 14 15
-table_cont           : 7
-value                : 5 16
+elem                 : 2 3
+fileElems            : 1 2
+t_cont               : 15 17
+t_value              : 16 17
+tab_cont             : 36 38
+tab_cont2            : 38
+table                : 5 37
+table_cont           : 9
+value                : 7 18
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . converter
-    (1) converter -> . atribs
-    (2) atribs -> . atribs atrib
-    (3) atribs -> . atrib
-    (4) atrib -> . KEY EQUALS content
+    (1) converter -> . fileElems
+    (2) fileElems -> . fileElems elem
+    (3) fileElems -> . elem
+    (4) elem -> . atrib
+    (5) elem -> . table
+    (6) atrib -> . KEY EQUALS content
+    (36) table -> . APAR tab_cont CPAR
+    (37) table -> . table atrib
 
-    KEY             shift and go to state 4
+    KEY             shift and go to state 6
+    APAR            shift and go to state 7
 
     converter                      shift and go to state 1
-    atribs                         shift and go to state 2
-    atrib                          shift and go to state 3
+    fileElems                      shift and go to state 2
+    elem                           shift and go to state 3
+    atrib                          shift and go to state 4
+    table                          shift and go to state 5
 
 state 1
 
@@ -108,671 +131,842 @@ state 1
 
 state 2
 
-    (1) converter -> atribs .
-    (2) atribs -> atribs . atrib
-    (4) atrib -> . KEY EQUALS content
+    (1) converter -> fileElems .
+    (2) fileElems -> fileElems . elem
+    (4) elem -> . atrib
+    (5) elem -> . table
+    (6) atrib -> . KEY EQUALS content
+    (36) table -> . APAR tab_cont CPAR
+    (37) table -> . table atrib
 
-    $end            reduce using rule 1 (converter -> atribs .)
-    KEY             shift and go to state 4
+    $end            reduce using rule 1 (converter -> fileElems .)
+    KEY             shift and go to state 6
+    APAR            shift and go to state 7
 
-    atrib                          shift and go to state 5
+    elem                           shift and go to state 8
+    atrib                          shift and go to state 4
+    table                          shift and go to state 5
 
 state 3
 
-    (3) atribs -> atrib .
+    (3) fileElems -> elem .
 
-    KEY             reduce using rule 3 (atribs -> atrib .)
-    $end            reduce using rule 3 (atribs -> atrib .)
+    KEY             reduce using rule 3 (fileElems -> elem .)
+    APAR            reduce using rule 3 (fileElems -> elem .)
+    $end            reduce using rule 3 (fileElems -> elem .)
 
 
 state 4
 
-    (4) atrib -> KEY . EQUALS content
+    (4) elem -> atrib .
 
-    EQUALS          shift and go to state 6
+    KEY             reduce using rule 4 (elem -> atrib .)
+    APAR            reduce using rule 4 (elem -> atrib .)
+    $end            reduce using rule 4 (elem -> atrib .)
 
 
 state 5
 
-    (2) atribs -> atribs atrib .
+    (5) elem -> table .
+    (37) table -> table . atrib
+    (6) atrib -> . KEY EQUALS content
 
-    KEY             reduce using rule 2 (atribs -> atribs atrib .)
-    $end            reduce using rule 2 (atribs -> atribs atrib .)
+  ! shift/reduce conflict for KEY resolved as shift
+    APAR            reduce using rule 5 (elem -> table .)
+    $end            reduce using rule 5 (elem -> table .)
+    KEY             shift and go to state 6
 
+  ! KEY             [ reduce using rule 5 (elem -> table .) ]
+
+    atrib                          shift and go to state 9
 
 state 6
 
-    (4) atrib -> KEY EQUALS . content
-    (5) content -> . value
-    (6) content -> . APAR arr_cont
-    (7) content -> . ACHAV table_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (6) atrib -> KEY . EQUALS content
 
-    APAR            shift and go to state 9
-    ACHAV           shift and go to state 10
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    EQUALS          shift and go to state 10
 
-    content                        shift and go to state 7
-    value                          shift and go to state 8
 
 state 7
 
-    (4) atrib -> KEY EQUALS content .
+    (36) table -> APAR . tab_cont CPAR
+    (38) tab_cont -> . tab_cont DOT tab_cont2
+    (39) tab_cont -> . KEY
+    (40) tab_cont -> . STRING
+    (41) tab_cont -> . INTEGER
 
-    KEY             reduce using rule 4 (atrib -> KEY EQUALS content .)
-    $end            reduce using rule 4 (atrib -> KEY EQUALS content .)
+    KEY             shift and go to state 12
+    STRING          shift and go to state 13
+    INTEGER         shift and go to state 14
 
+    tab_cont                       shift and go to state 11
 
 state 8
 
-    (5) content -> value .
+    (2) fileElems -> fileElems elem .
 
-    KEY             reduce using rule 5 (content -> value .)
-    $end            reduce using rule 5 (content -> value .)
-    CPAR            reduce using rule 5 (content -> value .)
-    COMMA           reduce using rule 5 (content -> value .)
+    KEY             reduce using rule 2 (fileElems -> fileElems elem .)
+    APAR            reduce using rule 2 (fileElems -> fileElems elem .)
+    $end            reduce using rule 2 (fileElems -> fileElems elem .)
 
 
 state 9
 
-    (6) content -> APAR . arr_cont
-    (8) arr_cont -> . CPAR
-    (9) arr_cont -> . a_cont CPAR
-    (10) a_cont -> . content
-    (11) a_cont -> . a_cont COMMA content
-    (5) content -> . value
-    (6) content -> . APAR arr_cont
-    (7) content -> . ACHAV table_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (37) table -> table atrib .
 
-    CPAR            shift and go to state 28
-    APAR            shift and go to state 9
-    ACHAV           shift and go to state 10
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    KEY             reduce using rule 37 (table -> table atrib .)
+    APAR            reduce using rule 37 (table -> table atrib .)
+    $end            reduce using rule 37 (table -> table atrib .)
 
-    arr_cont                       shift and go to state 27
-    a_cont                         shift and go to state 29
-    content                        shift and go to state 30
-    value                          shift and go to state 8
 
 state 10
 
-    (7) content -> ACHAV . table_cont
-    (12) table_cont -> . CCHAV
-    (13) table_cont -> . t_cont CCHAV
-    (14) t_cont -> . KEY EQUALS t_value
-    (15) t_cont -> . t_cont COMMA KEY EQUALS t_value
+    (6) atrib -> KEY EQUALS . content
+    (7) content -> . value
+    (8) content -> . APAR arr_cont
+    (9) content -> . ACHAV table_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
 
-    CCHAV           shift and go to state 32
-    KEY             shift and go to state 34
+    APAR            shift and go to state 17
+    ACHAV           shift and go to state 18
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
 
-    table_cont                     shift and go to state 31
-    t_cont                         shift and go to state 33
+    content                        shift and go to state 15
+    value                          shift and go to state 16
 
 state 11
 
-    (18) value -> STRING .
+    (36) table -> APAR tab_cont . CPAR
+    (38) tab_cont -> tab_cont . DOT tab_cont2
 
-    KEY             reduce using rule 18 (value -> STRING .)
-    $end            reduce using rule 18 (value -> STRING .)
-    CPAR            reduce using rule 18 (value -> STRING .)
-    COMMA           reduce using rule 18 (value -> STRING .)
-    CCHAV           reduce using rule 18 (value -> STRING .)
+    CPAR            shift and go to state 35
+    DOT             shift and go to state 36
 
 
 state 12
 
-    (19) value -> BOOL .
+    (39) tab_cont -> KEY .
 
-    KEY             reduce using rule 19 (value -> BOOL .)
-    $end            reduce using rule 19 (value -> BOOL .)
-    CPAR            reduce using rule 19 (value -> BOOL .)
-    COMMA           reduce using rule 19 (value -> BOOL .)
-    CCHAV           reduce using rule 19 (value -> BOOL .)
+    CPAR            reduce using rule 39 (tab_cont -> KEY .)
+    DOT             reduce using rule 39 (tab_cont -> KEY .)
 
 
 state 13
 
-    (20) value -> NULL .
+    (40) tab_cont -> STRING .
 
-    KEY             reduce using rule 20 (value -> NULL .)
-    $end            reduce using rule 20 (value -> NULL .)
-    CPAR            reduce using rule 20 (value -> NULL .)
-    COMMA           reduce using rule 20 (value -> NULL .)
-    CCHAV           reduce using rule 20 (value -> NULL .)
+    CPAR            reduce using rule 40 (tab_cont -> STRING .)
+    DOT             reduce using rule 40 (tab_cont -> STRING .)
 
 
 state 14
 
-    (21) value -> INTEGER .
+    (41) tab_cont -> INTEGER .
 
-    KEY             reduce using rule 21 (value -> INTEGER .)
-    $end            reduce using rule 21 (value -> INTEGER .)
-    CPAR            reduce using rule 21 (value -> INTEGER .)
-    COMMA           reduce using rule 21 (value -> INTEGER .)
-    CCHAV           reduce using rule 21 (value -> INTEGER .)
+    CPAR            reduce using rule 41 (tab_cont -> INTEGER .)
+    DOT             reduce using rule 41 (tab_cont -> INTEGER .)
 
 
 state 15
 
-    (22) value -> FLOAT .
+    (6) atrib -> KEY EQUALS content .
 
-    KEY             reduce using rule 22 (value -> FLOAT .)
-    $end            reduce using rule 22 (value -> FLOAT .)
-    CPAR            reduce using rule 22 (value -> FLOAT .)
-    COMMA           reduce using rule 22 (value -> FLOAT .)
-    CCHAV           reduce using rule 22 (value -> FLOAT .)
+    KEY             reduce using rule 6 (atrib -> KEY EQUALS content .)
+    APAR            reduce using rule 6 (atrib -> KEY EQUALS content .)
+    $end            reduce using rule 6 (atrib -> KEY EQUALS content .)
 
 
 state 16
 
-    (23) value -> BINARY .
+    (7) content -> value .
 
-    KEY             reduce using rule 23 (value -> BINARY .)
-    $end            reduce using rule 23 (value -> BINARY .)
-    CPAR            reduce using rule 23 (value -> BINARY .)
-    COMMA           reduce using rule 23 (value -> BINARY .)
-    CCHAV           reduce using rule 23 (value -> BINARY .)
+    KEY             reduce using rule 7 (content -> value .)
+    APAR            reduce using rule 7 (content -> value .)
+    $end            reduce using rule 7 (content -> value .)
+    CPAR            reduce using rule 7 (content -> value .)
+    COMMA           reduce using rule 7 (content -> value .)
 
 
 state 17
 
-    (24) value -> OCTAL .
+    (8) content -> APAR . arr_cont
+    (10) arr_cont -> . CPAR
+    (11) arr_cont -> . a_cont CPAR
+    (12) a_cont -> . content
+    (13) a_cont -> . a_cont COMMA content
+    (7) content -> . value
+    (8) content -> . APAR arr_cont
+    (9) content -> . ACHAV table_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
 
-    KEY             reduce using rule 24 (value -> OCTAL .)
-    $end            reduce using rule 24 (value -> OCTAL .)
-    CPAR            reduce using rule 24 (value -> OCTAL .)
-    COMMA           reduce using rule 24 (value -> OCTAL .)
-    CCHAV           reduce using rule 24 (value -> OCTAL .)
+    CPAR            shift and go to state 38
+    APAR            shift and go to state 17
+    ACHAV           shift and go to state 18
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
 
+    arr_cont                       shift and go to state 37
+    a_cont                         shift and go to state 39
+    content                        shift and go to state 40
+    value                          shift and go to state 16
 
 state 18
 
-    (25) value -> HEXA .
+    (9) content -> ACHAV . table_cont
+    (14) table_cont -> . CCHAV
+    (15) table_cont -> . t_cont CCHAV
+    (16) t_cont -> . KEY EQUALS t_value
+    (17) t_cont -> . t_cont COMMA KEY EQUALS t_value
 
-    KEY             reduce using rule 25 (value -> HEXA .)
-    $end            reduce using rule 25 (value -> HEXA .)
-    CPAR            reduce using rule 25 (value -> HEXA .)
-    COMMA           reduce using rule 25 (value -> HEXA .)
-    CCHAV           reduce using rule 25 (value -> HEXA .)
+    CCHAV           shift and go to state 42
+    KEY             shift and go to state 44
 
+    table_cont                     shift and go to state 41
+    t_cont                         shift and go to state 43
 
 state 19
 
-    (26) value -> NAN .
+    (20) value -> STRING .
 
-    KEY             reduce using rule 26 (value -> NAN .)
-    $end            reduce using rule 26 (value -> NAN .)
-    CPAR            reduce using rule 26 (value -> NAN .)
-    COMMA           reduce using rule 26 (value -> NAN .)
-    CCHAV           reduce using rule 26 (value -> NAN .)
+    KEY             reduce using rule 20 (value -> STRING .)
+    APAR            reduce using rule 20 (value -> STRING .)
+    $end            reduce using rule 20 (value -> STRING .)
+    CPAR            reduce using rule 20 (value -> STRING .)
+    COMMA           reduce using rule 20 (value -> STRING .)
+    CCHAV           reduce using rule 20 (value -> STRING .)
 
 
 state 20
 
-    (27) value -> INFINITY .
+    (21) value -> BOOL .
 
-    KEY             reduce using rule 27 (value -> INFINITY .)
-    $end            reduce using rule 27 (value -> INFINITY .)
-    CPAR            reduce using rule 27 (value -> INFINITY .)
-    COMMA           reduce using rule 27 (value -> INFINITY .)
-    CCHAV           reduce using rule 27 (value -> INFINITY .)
+    KEY             reduce using rule 21 (value -> BOOL .)
+    APAR            reduce using rule 21 (value -> BOOL .)
+    $end            reduce using rule 21 (value -> BOOL .)
+    CPAR            reduce using rule 21 (value -> BOOL .)
+    COMMA           reduce using rule 21 (value -> BOOL .)
+    CCHAV           reduce using rule 21 (value -> BOOL .)
 
 
 state 21
 
-    (28) value -> DATE .
+    (22) value -> NULL .
 
-    KEY             reduce using rule 28 (value -> DATE .)
-    $end            reduce using rule 28 (value -> DATE .)
-    CPAR            reduce using rule 28 (value -> DATE .)
-    COMMA           reduce using rule 28 (value -> DATE .)
-    CCHAV           reduce using rule 28 (value -> DATE .)
+    KEY             reduce using rule 22 (value -> NULL .)
+    APAR            reduce using rule 22 (value -> NULL .)
+    $end            reduce using rule 22 (value -> NULL .)
+    CPAR            reduce using rule 22 (value -> NULL .)
+    COMMA           reduce using rule 22 (value -> NULL .)
+    CCHAV           reduce using rule 22 (value -> NULL .)
 
 
 state 22
 
-    (29) value -> TIME .
+    (23) value -> INTEGER .
 
-    KEY             reduce using rule 29 (value -> TIME .)
-    $end            reduce using rule 29 (value -> TIME .)
-    CPAR            reduce using rule 29 (value -> TIME .)
-    COMMA           reduce using rule 29 (value -> TIME .)
-    CCHAV           reduce using rule 29 (value -> TIME .)
+    KEY             reduce using rule 23 (value -> INTEGER .)
+    APAR            reduce using rule 23 (value -> INTEGER .)
+    $end            reduce using rule 23 (value -> INTEGER .)
+    CPAR            reduce using rule 23 (value -> INTEGER .)
+    COMMA           reduce using rule 23 (value -> INTEGER .)
+    CCHAV           reduce using rule 23 (value -> INTEGER .)
 
 
 state 23
 
-    (30) value -> DATETIME .
+    (24) value -> FLOAT .
 
-    KEY             reduce using rule 30 (value -> DATETIME .)
-    $end            reduce using rule 30 (value -> DATETIME .)
-    CPAR            reduce using rule 30 (value -> DATETIME .)
-    COMMA           reduce using rule 30 (value -> DATETIME .)
-    CCHAV           reduce using rule 30 (value -> DATETIME .)
+    KEY             reduce using rule 24 (value -> FLOAT .)
+    APAR            reduce using rule 24 (value -> FLOAT .)
+    $end            reduce using rule 24 (value -> FLOAT .)
+    CPAR            reduce using rule 24 (value -> FLOAT .)
+    COMMA           reduce using rule 24 (value -> FLOAT .)
+    CCHAV           reduce using rule 24 (value -> FLOAT .)
 
 
 state 24
 
-    (31) value -> MULTILINE_STRING .
+    (25) value -> BINARY .
 
-    KEY             reduce using rule 31 (value -> MULTILINE_STRING .)
-    $end            reduce using rule 31 (value -> MULTILINE_STRING .)
-    CPAR            reduce using rule 31 (value -> MULTILINE_STRING .)
-    COMMA           reduce using rule 31 (value -> MULTILINE_STRING .)
-    CCHAV           reduce using rule 31 (value -> MULTILINE_STRING .)
+    KEY             reduce using rule 25 (value -> BINARY .)
+    APAR            reduce using rule 25 (value -> BINARY .)
+    $end            reduce using rule 25 (value -> BINARY .)
+    CPAR            reduce using rule 25 (value -> BINARY .)
+    COMMA           reduce using rule 25 (value -> BINARY .)
+    CCHAV           reduce using rule 25 (value -> BINARY .)
 
 
 state 25
 
-    (32) value -> STRING_LITERAL .
+    (26) value -> OCTAL .
 
-    KEY             reduce using rule 32 (value -> STRING_LITERAL .)
-    $end            reduce using rule 32 (value -> STRING_LITERAL .)
-    CPAR            reduce using rule 32 (value -> STRING_LITERAL .)
-    COMMA           reduce using rule 32 (value -> STRING_LITERAL .)
-    CCHAV           reduce using rule 32 (value -> STRING_LITERAL .)
+    KEY             reduce using rule 26 (value -> OCTAL .)
+    APAR            reduce using rule 26 (value -> OCTAL .)
+    $end            reduce using rule 26 (value -> OCTAL .)
+    CPAR            reduce using rule 26 (value -> OCTAL .)
+    COMMA           reduce using rule 26 (value -> OCTAL .)
+    CCHAV           reduce using rule 26 (value -> OCTAL .)
 
 
 state 26
 
-    (33) value -> MULTILINE_STRING_LITERAL .
+    (27) value -> HEXA .
 
-    KEY             reduce using rule 33 (value -> MULTILINE_STRING_LITERAL .)
-    $end            reduce using rule 33 (value -> MULTILINE_STRING_LITERAL .)
-    CPAR            reduce using rule 33 (value -> MULTILINE_STRING_LITERAL .)
-    COMMA           reduce using rule 33 (value -> MULTILINE_STRING_LITERAL .)
-    CCHAV           reduce using rule 33 (value -> MULTILINE_STRING_LITERAL .)
+    KEY             reduce using rule 27 (value -> HEXA .)
+    APAR            reduce using rule 27 (value -> HEXA .)
+    $end            reduce using rule 27 (value -> HEXA .)
+    CPAR            reduce using rule 27 (value -> HEXA .)
+    COMMA           reduce using rule 27 (value -> HEXA .)
+    CCHAV           reduce using rule 27 (value -> HEXA .)
 
 
 state 27
 
-    (6) content -> APAR arr_cont .
+    (28) value -> NAN .
 
-    KEY             reduce using rule 6 (content -> APAR arr_cont .)
-    $end            reduce using rule 6 (content -> APAR arr_cont .)
-    CPAR            reduce using rule 6 (content -> APAR arr_cont .)
-    COMMA           reduce using rule 6 (content -> APAR arr_cont .)
+    KEY             reduce using rule 28 (value -> NAN .)
+    APAR            reduce using rule 28 (value -> NAN .)
+    $end            reduce using rule 28 (value -> NAN .)
+    CPAR            reduce using rule 28 (value -> NAN .)
+    COMMA           reduce using rule 28 (value -> NAN .)
+    CCHAV           reduce using rule 28 (value -> NAN .)
 
 
 state 28
 
-    (8) arr_cont -> CPAR .
+    (29) value -> INFINITY .
 
-    KEY             reduce using rule 8 (arr_cont -> CPAR .)
-    $end            reduce using rule 8 (arr_cont -> CPAR .)
-    CPAR            reduce using rule 8 (arr_cont -> CPAR .)
-    COMMA           reduce using rule 8 (arr_cont -> CPAR .)
-    CCHAV           reduce using rule 8 (arr_cont -> CPAR .)
+    KEY             reduce using rule 29 (value -> INFINITY .)
+    APAR            reduce using rule 29 (value -> INFINITY .)
+    $end            reduce using rule 29 (value -> INFINITY .)
+    CPAR            reduce using rule 29 (value -> INFINITY .)
+    COMMA           reduce using rule 29 (value -> INFINITY .)
+    CCHAV           reduce using rule 29 (value -> INFINITY .)
 
 
 state 29
 
-    (9) arr_cont -> a_cont . CPAR
-    (11) a_cont -> a_cont . COMMA content
+    (30) value -> DATE .
 
-    CPAR            shift and go to state 35
-    COMMA           shift and go to state 36
+    KEY             reduce using rule 30 (value -> DATE .)
+    APAR            reduce using rule 30 (value -> DATE .)
+    $end            reduce using rule 30 (value -> DATE .)
+    CPAR            reduce using rule 30 (value -> DATE .)
+    COMMA           reduce using rule 30 (value -> DATE .)
+    CCHAV           reduce using rule 30 (value -> DATE .)
 
 
 state 30
 
-    (10) a_cont -> content .
+    (31) value -> TIME .
 
-    CPAR            reduce using rule 10 (a_cont -> content .)
-    COMMA           reduce using rule 10 (a_cont -> content .)
+    KEY             reduce using rule 31 (value -> TIME .)
+    APAR            reduce using rule 31 (value -> TIME .)
+    $end            reduce using rule 31 (value -> TIME .)
+    CPAR            reduce using rule 31 (value -> TIME .)
+    COMMA           reduce using rule 31 (value -> TIME .)
+    CCHAV           reduce using rule 31 (value -> TIME .)
 
 
 state 31
 
-    (7) content -> ACHAV table_cont .
+    (32) value -> DATETIME .
 
-    KEY             reduce using rule 7 (content -> ACHAV table_cont .)
-    $end            reduce using rule 7 (content -> ACHAV table_cont .)
-    CPAR            reduce using rule 7 (content -> ACHAV table_cont .)
-    COMMA           reduce using rule 7 (content -> ACHAV table_cont .)
+    KEY             reduce using rule 32 (value -> DATETIME .)
+    APAR            reduce using rule 32 (value -> DATETIME .)
+    $end            reduce using rule 32 (value -> DATETIME .)
+    CPAR            reduce using rule 32 (value -> DATETIME .)
+    COMMA           reduce using rule 32 (value -> DATETIME .)
+    CCHAV           reduce using rule 32 (value -> DATETIME .)
 
 
 state 32
 
-    (12) table_cont -> CCHAV .
+    (33) value -> MULTILINE_STRING .
 
-    KEY             reduce using rule 12 (table_cont -> CCHAV .)
-    $end            reduce using rule 12 (table_cont -> CCHAV .)
-    CPAR            reduce using rule 12 (table_cont -> CCHAV .)
-    COMMA           reduce using rule 12 (table_cont -> CCHAV .)
+    KEY             reduce using rule 33 (value -> MULTILINE_STRING .)
+    APAR            reduce using rule 33 (value -> MULTILINE_STRING .)
+    $end            reduce using rule 33 (value -> MULTILINE_STRING .)
+    CPAR            reduce using rule 33 (value -> MULTILINE_STRING .)
+    COMMA           reduce using rule 33 (value -> MULTILINE_STRING .)
+    CCHAV           reduce using rule 33 (value -> MULTILINE_STRING .)
 
 
 state 33
 
-    (13) table_cont -> t_cont . CCHAV
-    (15) t_cont -> t_cont . COMMA KEY EQUALS t_value
+    (34) value -> STRING_LITERAL .
 
-    CCHAV           shift and go to state 37
-    COMMA           shift and go to state 38
+    KEY             reduce using rule 34 (value -> STRING_LITERAL .)
+    APAR            reduce using rule 34 (value -> STRING_LITERAL .)
+    $end            reduce using rule 34 (value -> STRING_LITERAL .)
+    CPAR            reduce using rule 34 (value -> STRING_LITERAL .)
+    COMMA           reduce using rule 34 (value -> STRING_LITERAL .)
+    CCHAV           reduce using rule 34 (value -> STRING_LITERAL .)
 
 
 state 34
 
-    (14) t_cont -> KEY . EQUALS t_value
+    (35) value -> MULTILINE_STRING_LITERAL .
 
-    EQUALS          shift and go to state 39
+    KEY             reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
+    APAR            reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
+    $end            reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
+    CPAR            reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
+    COMMA           reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
+    CCHAV           reduce using rule 35 (value -> MULTILINE_STRING_LITERAL .)
 
 
 state 35
 
-    (9) arr_cont -> a_cont CPAR .
+    (36) table -> APAR tab_cont CPAR .
 
-    KEY             reduce using rule 9 (arr_cont -> a_cont CPAR .)
-    $end            reduce using rule 9 (arr_cont -> a_cont CPAR .)
-    CPAR            reduce using rule 9 (arr_cont -> a_cont CPAR .)
-    COMMA           reduce using rule 9 (arr_cont -> a_cont CPAR .)
-    CCHAV           reduce using rule 9 (arr_cont -> a_cont CPAR .)
+    KEY             reduce using rule 36 (table -> APAR tab_cont CPAR .)
+    APAR            reduce using rule 36 (table -> APAR tab_cont CPAR .)
+    $end            reduce using rule 36 (table -> APAR tab_cont CPAR .)
 
 
 state 36
 
-    (11) a_cont -> a_cont COMMA . content
-    (5) content -> . value
-    (6) content -> . APAR arr_cont
-    (7) content -> . ACHAV table_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (38) tab_cont -> tab_cont DOT . tab_cont2
+    (42) tab_cont2 -> . KEY
+    (43) tab_cont2 -> . STRING
+    (44) tab_cont2 -> . INTEGER
 
-    APAR            shift and go to state 9
-    ACHAV           shift and go to state 10
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    KEY             shift and go to state 46
+    STRING          shift and go to state 47
+    INTEGER         shift and go to state 48
 
-    content                        shift and go to state 40
-    value                          shift and go to state 8
+    tab_cont2                      shift and go to state 45
 
 state 37
 
-    (13) table_cont -> t_cont CCHAV .
+    (8) content -> APAR arr_cont .
 
-    KEY             reduce using rule 13 (table_cont -> t_cont CCHAV .)
-    $end            reduce using rule 13 (table_cont -> t_cont CCHAV .)
-    CPAR            reduce using rule 13 (table_cont -> t_cont CCHAV .)
-    COMMA           reduce using rule 13 (table_cont -> t_cont CCHAV .)
+    KEY             reduce using rule 8 (content -> APAR arr_cont .)
+    APAR            reduce using rule 8 (content -> APAR arr_cont .)
+    $end            reduce using rule 8 (content -> APAR arr_cont .)
+    CPAR            reduce using rule 8 (content -> APAR arr_cont .)
+    COMMA           reduce using rule 8 (content -> APAR arr_cont .)
 
 
 state 38
 
-    (15) t_cont -> t_cont COMMA . KEY EQUALS t_value
+    (10) arr_cont -> CPAR .
 
-    KEY             shift and go to state 41
+    KEY             reduce using rule 10 (arr_cont -> CPAR .)
+    APAR            reduce using rule 10 (arr_cont -> CPAR .)
+    $end            reduce using rule 10 (arr_cont -> CPAR .)
+    CPAR            reduce using rule 10 (arr_cont -> CPAR .)
+    COMMA           reduce using rule 10 (arr_cont -> CPAR .)
+    CCHAV           reduce using rule 10 (arr_cont -> CPAR .)
 
 
 state 39
 
-    (14) t_cont -> KEY EQUALS . t_value
-    (16) t_value -> . value
-    (17) t_value -> . APAR arr_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (11) arr_cont -> a_cont . CPAR
+    (13) a_cont -> a_cont . COMMA content
 
-    APAR            shift and go to state 44
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    CPAR            shift and go to state 49
+    COMMA           shift and go to state 50
 
-    t_value                        shift and go to state 42
-    value                          shift and go to state 43
 
 state 40
 
-    (11) a_cont -> a_cont COMMA content .
+    (12) a_cont -> content .
 
-    CPAR            reduce using rule 11 (a_cont -> a_cont COMMA content .)
-    COMMA           reduce using rule 11 (a_cont -> a_cont COMMA content .)
+    CPAR            reduce using rule 12 (a_cont -> content .)
+    COMMA           reduce using rule 12 (a_cont -> content .)
 
 
 state 41
 
-    (15) t_cont -> t_cont COMMA KEY . EQUALS t_value
+    (9) content -> ACHAV table_cont .
 
-    EQUALS          shift and go to state 45
+    KEY             reduce using rule 9 (content -> ACHAV table_cont .)
+    APAR            reduce using rule 9 (content -> ACHAV table_cont .)
+    $end            reduce using rule 9 (content -> ACHAV table_cont .)
+    CPAR            reduce using rule 9 (content -> ACHAV table_cont .)
+    COMMA           reduce using rule 9 (content -> ACHAV table_cont .)
 
 
 state 42
 
-    (14) t_cont -> KEY EQUALS t_value .
+    (14) table_cont -> CCHAV .
 
-    CCHAV           reduce using rule 14 (t_cont -> KEY EQUALS t_value .)
-    COMMA           reduce using rule 14 (t_cont -> KEY EQUALS t_value .)
+    KEY             reduce using rule 14 (table_cont -> CCHAV .)
+    APAR            reduce using rule 14 (table_cont -> CCHAV .)
+    $end            reduce using rule 14 (table_cont -> CCHAV .)
+    CPAR            reduce using rule 14 (table_cont -> CCHAV .)
+    COMMA           reduce using rule 14 (table_cont -> CCHAV .)
 
 
 state 43
 
-    (16) t_value -> value .
+    (15) table_cont -> t_cont . CCHAV
+    (17) t_cont -> t_cont . COMMA KEY EQUALS t_value
 
-    CCHAV           reduce using rule 16 (t_value -> value .)
-    COMMA           reduce using rule 16 (t_value -> value .)
+    CCHAV           shift and go to state 51
+    COMMA           shift and go to state 52
 
 
 state 44
 
-    (17) t_value -> APAR . arr_cont
-    (8) arr_cont -> . CPAR
-    (9) arr_cont -> . a_cont CPAR
-    (10) a_cont -> . content
-    (11) a_cont -> . a_cont COMMA content
-    (5) content -> . value
-    (6) content -> . APAR arr_cont
-    (7) content -> . ACHAV table_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (16) t_cont -> KEY . EQUALS t_value
 
-    CPAR            shift and go to state 28
-    APAR            shift and go to state 9
-    ACHAV           shift and go to state 10
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    EQUALS          shift and go to state 53
 
-    arr_cont                       shift and go to state 46
-    a_cont                         shift and go to state 29
-    content                        shift and go to state 30
-    value                          shift and go to state 8
 
 state 45
 
-    (15) t_cont -> t_cont COMMA KEY EQUALS . t_value
-    (16) t_value -> . value
-    (17) t_value -> . APAR arr_cont
-    (18) value -> . STRING
-    (19) value -> . BOOL
-    (20) value -> . NULL
-    (21) value -> . INTEGER
-    (22) value -> . FLOAT
-    (23) value -> . BINARY
-    (24) value -> . OCTAL
-    (25) value -> . HEXA
-    (26) value -> . NAN
-    (27) value -> . INFINITY
-    (28) value -> . DATE
-    (29) value -> . TIME
-    (30) value -> . DATETIME
-    (31) value -> . MULTILINE_STRING
-    (32) value -> . STRING_LITERAL
-    (33) value -> . MULTILINE_STRING_LITERAL
+    (38) tab_cont -> tab_cont DOT tab_cont2 .
 
-    APAR            shift and go to state 44
-    STRING          shift and go to state 11
-    BOOL            shift and go to state 12
-    NULL            shift and go to state 13
-    INTEGER         shift and go to state 14
-    FLOAT           shift and go to state 15
-    BINARY          shift and go to state 16
-    OCTAL           shift and go to state 17
-    HEXA            shift and go to state 18
-    NAN             shift and go to state 19
-    INFINITY        shift and go to state 20
-    DATE            shift and go to state 21
-    TIME            shift and go to state 22
-    DATETIME        shift and go to state 23
-    MULTILINE_STRING shift and go to state 24
-    STRING_LITERAL  shift and go to state 25
-    MULTILINE_STRING_LITERAL shift and go to state 26
+    CPAR            reduce using rule 38 (tab_cont -> tab_cont DOT tab_cont2 .)
+    DOT             reduce using rule 38 (tab_cont -> tab_cont DOT tab_cont2 .)
 
-    t_value                        shift and go to state 47
-    value                          shift and go to state 43
 
 state 46
 
-    (17) t_value -> APAR arr_cont .
+    (42) tab_cont2 -> KEY .
 
-    CCHAV           reduce using rule 17 (t_value -> APAR arr_cont .)
-    COMMA           reduce using rule 17 (t_value -> APAR arr_cont .)
+    CPAR            reduce using rule 42 (tab_cont2 -> KEY .)
+    DOT             reduce using rule 42 (tab_cont2 -> KEY .)
 
 
 state 47
 
-    (15) t_cont -> t_cont COMMA KEY EQUALS t_value .
+    (43) tab_cont2 -> STRING .
 
-    CCHAV           reduce using rule 15 (t_cont -> t_cont COMMA KEY EQUALS t_value .)
-    COMMA           reduce using rule 15 (t_cont -> t_cont COMMA KEY EQUALS t_value .)
+    CPAR            reduce using rule 43 (tab_cont2 -> STRING .)
+    DOT             reduce using rule 43 (tab_cont2 -> STRING .)
 
+
+state 48
+
+    (44) tab_cont2 -> INTEGER .
+
+    CPAR            reduce using rule 44 (tab_cont2 -> INTEGER .)
+    DOT             reduce using rule 44 (tab_cont2 -> INTEGER .)
+
+
+state 49
+
+    (11) arr_cont -> a_cont CPAR .
+
+    KEY             reduce using rule 11 (arr_cont -> a_cont CPAR .)
+    APAR            reduce using rule 11 (arr_cont -> a_cont CPAR .)
+    $end            reduce using rule 11 (arr_cont -> a_cont CPAR .)
+    CPAR            reduce using rule 11 (arr_cont -> a_cont CPAR .)
+    COMMA           reduce using rule 11 (arr_cont -> a_cont CPAR .)
+    CCHAV           reduce using rule 11 (arr_cont -> a_cont CPAR .)
+
+
+state 50
+
+    (13) a_cont -> a_cont COMMA . content
+    (7) content -> . value
+    (8) content -> . APAR arr_cont
+    (9) content -> . ACHAV table_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
+
+    APAR            shift and go to state 17
+    ACHAV           shift and go to state 18
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
+
+    content                        shift and go to state 54
+    value                          shift and go to state 16
+
+state 51
+
+    (15) table_cont -> t_cont CCHAV .
+
+    KEY             reduce using rule 15 (table_cont -> t_cont CCHAV .)
+    APAR            reduce using rule 15 (table_cont -> t_cont CCHAV .)
+    $end            reduce using rule 15 (table_cont -> t_cont CCHAV .)
+    CPAR            reduce using rule 15 (table_cont -> t_cont CCHAV .)
+    COMMA           reduce using rule 15 (table_cont -> t_cont CCHAV .)
+
+
+state 52
+
+    (17) t_cont -> t_cont COMMA . KEY EQUALS t_value
+
+    KEY             shift and go to state 55
+
+
+state 53
+
+    (16) t_cont -> KEY EQUALS . t_value
+    (18) t_value -> . value
+    (19) t_value -> . APAR arr_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
+
+    APAR            shift and go to state 58
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
+
+    t_value                        shift and go to state 56
+    value                          shift and go to state 57
+
+state 54
+
+    (13) a_cont -> a_cont COMMA content .
+
+    CPAR            reduce using rule 13 (a_cont -> a_cont COMMA content .)
+    COMMA           reduce using rule 13 (a_cont -> a_cont COMMA content .)
+
+
+state 55
+
+    (17) t_cont -> t_cont COMMA KEY . EQUALS t_value
+
+    EQUALS          shift and go to state 59
+
+
+state 56
+
+    (16) t_cont -> KEY EQUALS t_value .
+
+    CCHAV           reduce using rule 16 (t_cont -> KEY EQUALS t_value .)
+    COMMA           reduce using rule 16 (t_cont -> KEY EQUALS t_value .)
+
+
+state 57
+
+    (18) t_value -> value .
+
+    CCHAV           reduce using rule 18 (t_value -> value .)
+    COMMA           reduce using rule 18 (t_value -> value .)
+
+
+state 58
+
+    (19) t_value -> APAR . arr_cont
+    (10) arr_cont -> . CPAR
+    (11) arr_cont -> . a_cont CPAR
+    (12) a_cont -> . content
+    (13) a_cont -> . a_cont COMMA content
+    (7) content -> . value
+    (8) content -> . APAR arr_cont
+    (9) content -> . ACHAV table_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
+
+    CPAR            shift and go to state 38
+    APAR            shift and go to state 17
+    ACHAV           shift and go to state 18
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
+
+    arr_cont                       shift and go to state 60
+    a_cont                         shift and go to state 39
+    content                        shift and go to state 40
+    value                          shift and go to state 16
+
+state 59
+
+    (17) t_cont -> t_cont COMMA KEY EQUALS . t_value
+    (18) t_value -> . value
+    (19) t_value -> . APAR arr_cont
+    (20) value -> . STRING
+    (21) value -> . BOOL
+    (22) value -> . NULL
+    (23) value -> . INTEGER
+    (24) value -> . FLOAT
+    (25) value -> . BINARY
+    (26) value -> . OCTAL
+    (27) value -> . HEXA
+    (28) value -> . NAN
+    (29) value -> . INFINITY
+    (30) value -> . DATE
+    (31) value -> . TIME
+    (32) value -> . DATETIME
+    (33) value -> . MULTILINE_STRING
+    (34) value -> . STRING_LITERAL
+    (35) value -> . MULTILINE_STRING_LITERAL
+
+    APAR            shift and go to state 58
+    STRING          shift and go to state 19
+    BOOL            shift and go to state 20
+    NULL            shift and go to state 21
+    INTEGER         shift and go to state 22
+    FLOAT           shift and go to state 23
+    BINARY          shift and go to state 24
+    OCTAL           shift and go to state 25
+    HEXA            shift and go to state 26
+    NAN             shift and go to state 27
+    INFINITY        shift and go to state 28
+    DATE            shift and go to state 29
+    TIME            shift and go to state 30
+    DATETIME        shift and go to state 31
+    MULTILINE_STRING shift and go to state 32
+    STRING_LITERAL  shift and go to state 33
+    MULTILINE_STRING_LITERAL shift and go to state 34
+
+    t_value                        shift and go to state 61
+    value                          shift and go to state 57
+
+state 60
+
+    (19) t_value -> APAR arr_cont .
+
+    CCHAV           reduce using rule 19 (t_value -> APAR arr_cont .)
+    COMMA           reduce using rule 19 (t_value -> APAR arr_cont .)
+
+
+state 61
+
+    (17) t_cont -> t_cont COMMA KEY EQUALS t_value .
+
+    CCHAV           reduce using rule 17 (t_cont -> t_cont COMMA KEY EQUALS t_value .)
+    COMMA           reduce using rule 17 (t_cont -> t_cont COMMA KEY EQUALS t_value .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for KEY in state 5 resolved as shift

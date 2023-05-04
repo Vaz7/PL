@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ACHAV APAR APAR2 BINARY BOOL CCHAV COMMA CPAR CPAR2 DATE DATETIME EQUALS FLOAT HEXA INFINITY INTEGER KEY MULTILINE_STRING MULTILINE_STRING_LITERAL NAN NULL OCTAL STRING STRING_LITERAL TIMEconverter : atribsatribs : atribs atrib\n                | atrib\n    atrib : KEY EQUALS contentcontent : value\n                | APAR arr_cont\n                | ACHAV table_cont\n    arr_cont : CPAR\n                | a_cont CPAR\n    a_cont : content\n                | a_cont COMMA content\n    table_cont : CCHAV\n                    | t_cont CCHAV\n    t_cont : KEY EQUALS t_value\n              | t_cont COMMA KEY EQUALS t_value\n     t_value : value\n                | APAR arr_cont\n    value : STRING\n                | BOOL\n                | NULL\n                | INTEGER\n                | FLOAT\n                | BINARY\n                | OCTAL\n                | HEXA\n                | NAN\n                | INFINITY\n                | DATE\n                | TIME\n                | DATETIME\n                | MULTILINE_STRING\n                | STRING_LITERAL\n                | MULTILINE_STRING_LITERAL\n    '
+_lr_signature = 'ACHAV APAR APAR2 BINARY BOOL CCHAV COMMA CPAR CPAR2 DATE DATETIME DOT EQUALS FLOAT HEXA INFINITY INTEGER KEY MULTILINE_STRING MULTILINE_STRING_LITERAL NAN NULL OCTAL STRING STRING_LITERAL TIMEconverter : fileElems\n    fileElems : fileElems elem\n                | elem\n    elem : atrib\n            | table\n    atrib : KEY EQUALS contentcontent : value\n                | APAR arr_cont\n                | ACHAV table_cont\n    arr_cont : CPAR\n                | a_cont CPAR\n    a_cont : content\n                | a_cont COMMA content\n    table_cont : CCHAV\n                    | t_cont CCHAV\n    t_cont : KEY EQUALS t_value\n              | t_cont COMMA KEY EQUALS t_value\n     t_value : value\n                | APAR arr_cont\n    value : STRING\n                | BOOL\n                | NULL\n                | INTEGER\n                | FLOAT\n                | BINARY\n                | OCTAL\n                | HEXA\n                | NAN\n                | INFINITY\n                | DATE\n                | TIME\n                | DATETIME\n                | MULTILINE_STRING\n                | STRING_LITERAL\n                | MULTILINE_STRING_LITERAL\n    table : APAR tab_cont CPAR \n            | table atrib\n    tab_cont : tab_cont DOT tab_cont2\n                    | KEY\n                    | STRING\n                    | INTEGER\n    tab_cont2 : KEY\n                | STRING\n                | INTEGER\n    '
     
-_lr_action_items = {'KEY':([0,2,3,5,7,8,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,35,37,38,],[4,4,-3,-2,-4,-5,34,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-6,-8,-7,-12,-9,-13,41,]),'$end':([1,2,3,5,7,8,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,31,32,35,37,],[0,-1,-3,-2,-4,-5,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-6,-8,-7,-12,-9,-13,]),'EQUALS':([4,34,41,],[6,39,45,]),'APAR':([6,9,36,39,44,45,],[9,9,9,44,9,44,]),'ACHAV':([6,9,36,44,],[10,10,10,10,]),'STRING':([6,9,36,39,44,45,],[11,11,11,11,11,11,]),'BOOL':([6,9,36,39,44,45,],[12,12,12,12,12,12,]),'NULL':([6,9,36,39,44,45,],[13,13,13,13,13,13,]),'INTEGER':([6,9,36,39,44,45,],[14,14,14,14,14,14,]),'FLOAT':([6,9,36,39,44,45,],[15,15,15,15,15,15,]),'BINARY':([6,9,36,39,44,45,],[16,16,16,16,16,16,]),'OCTAL':([6,9,36,39,44,45,],[17,17,17,17,17,17,]),'HEXA':([6,9,36,39,44,45,],[18,18,18,18,18,18,]),'NAN':([6,9,36,39,44,45,],[19,19,19,19,19,19,]),'INFINITY':([6,9,36,39,44,45,],[20,20,20,20,20,20,]),'DATE':([6,9,36,39,44,45,],[21,21,21,21,21,21,]),'TIME':([6,9,36,39,44,45,],[22,22,22,22,22,22,]),'DATETIME':([6,9,36,39,44,45,],[23,23,23,23,23,23,]),'MULTILINE_STRING':([6,9,36,39,44,45,],[24,24,24,24,24,24,]),'STRING_LITERAL':([6,9,36,39,44,45,],[25,25,25,25,25,25,]),'MULTILINE_STRING_LITERAL':([6,9,36,39,44,45,],[26,26,26,26,26,26,]),'CPAR':([8,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,35,37,40,44,],[-5,28,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-6,-8,35,-10,-7,-12,-9,-13,-11,28,]),'COMMA':([8,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,35,37,40,42,43,46,47,],[-5,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-6,-8,36,-10,-7,-12,38,-9,-13,-11,-14,-16,-17,-15,]),'CCHAV':([10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,33,35,42,43,46,47,],[32,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-8,37,-9,-14,-16,-17,-15,]),}
+_lr_action_items = {'KEY':([0,2,3,4,5,7,8,9,15,16,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,41,42,49,51,52,],[6,6,-3,-4,6,12,-2,-37,-6,-7,44,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,46,-8,-10,-9,-14,-11,-15,55,]),'APAR':([0,2,3,4,5,8,9,10,15,16,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,41,42,49,50,51,53,58,59,],[7,7,-3,-4,-5,-2,-37,17,-6,-7,17,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,-8,-10,-9,-14,-11,17,-15,58,17,58,]),'$end':([1,2,3,4,5,8,9,15,16,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,41,42,49,51,],[0,-1,-3,-4,-5,-2,-37,-6,-7,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,-8,-10,-9,-14,-11,-15,]),'EQUALS':([6,44,55,],[10,53,59,]),'STRING':([7,10,17,36,50,53,58,59,],[13,19,19,47,19,19,19,19,]),'INTEGER':([7,10,17,36,50,53,58,59,],[14,22,22,48,22,22,22,22,]),'ACHAV':([10,17,50,58,],[18,18,18,18,]),'BOOL':([10,17,50,53,58,59,],[20,20,20,20,20,20,]),'NULL':([10,17,50,53,58,59,],[21,21,21,21,21,21,]),'FLOAT':([10,17,50,53,58,59,],[23,23,23,23,23,23,]),'BINARY':([10,17,50,53,58,59,],[24,24,24,24,24,24,]),'OCTAL':([10,17,50,53,58,59,],[25,25,25,25,25,25,]),'HEXA':([10,17,50,53,58,59,],[26,26,26,26,26,26,]),'NAN':([10,17,50,53,58,59,],[27,27,27,27,27,27,]),'INFINITY':([10,17,50,53,58,59,],[28,28,28,28,28,28,]),'DATE':([10,17,50,53,58,59,],[29,29,29,29,29,29,]),'TIME':([10,17,50,53,58,59,],[30,30,30,30,30,30,]),'DATETIME':([10,17,50,53,58,59,],[31,31,31,31,31,31,]),'MULTILINE_STRING':([10,17,50,53,58,59,],[32,32,32,32,32,32,]),'STRING_LITERAL':([10,17,50,53,58,59,],[33,33,33,33,33,33,]),'MULTILINE_STRING_LITERAL':([10,17,50,53,58,59,],[34,34,34,34,34,34,]),'CPAR':([11,12,13,14,16,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,45,46,47,48,49,51,54,58,],[35,-39,-40,-41,-7,38,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-8,-10,49,-12,-9,-14,-38,-42,-43,-44,-11,-15,-13,38,]),'DOT':([11,12,13,14,45,46,47,48,],[36,-39,-40,-41,-38,-42,-43,-44,]),'COMMA':([16,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,37,38,39,40,41,42,43,49,51,54,56,57,60,61,],[-7,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-8,-10,50,-12,-9,-14,52,-11,-15,-13,-16,-18,-19,-17,]),'CCHAV':([18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,38,43,49,56,57,60,61,],[42,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-10,51,-11,-16,-18,-19,-17,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'converter':([0,],[1,]),'atribs':([0,],[2,]),'atrib':([0,2,],[3,5,]),'content':([6,9,36,44,],[7,30,40,30,]),'value':([6,9,36,39,44,45,],[8,8,8,43,8,43,]),'arr_cont':([9,44,],[27,46,]),'a_cont':([9,44,],[29,29,]),'table_cont':([10,],[31,]),'t_cont':([10,],[33,]),'t_value':([39,45,],[42,47,]),}
+_lr_goto_items = {'converter':([0,],[1,]),'fileElems':([0,],[2,]),'elem':([0,2,],[3,8,]),'atrib':([0,2,5,],[4,4,9,]),'table':([0,2,],[5,5,]),'tab_cont':([7,],[11,]),'content':([10,17,50,58,],[15,40,54,40,]),'value':([10,17,50,53,58,59,],[16,16,16,57,16,57,]),'arr_cont':([17,58,],[37,60,]),'a_cont':([17,58,],[39,39,]),'table_cont':([18,],[41,]),'t_cont':([18,],[43,]),'tab_cont2':([36,],[45,]),'t_value':([53,59,],[56,61,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,37 +27,48 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> converter","S'",1,None,None,None),
-  ('converter -> atribs','converter',1,'p_converter','projeto_PL_parser.py',7),
-  ('atribs -> atribs atrib','atribs',2,'p_atribs','projeto_PL_parser.py',13),
-  ('atribs -> atrib','atribs',1,'p_atribs','projeto_PL_parser.py',14),
-  ('atrib -> KEY EQUALS content','atrib',3,'p_atrib','projeto_PL_parser.py',22),
-  ('content -> value','content',1,'p_content','projeto_PL_parser.py',26),
-  ('content -> APAR arr_cont','content',2,'p_content','projeto_PL_parser.py',27),
-  ('content -> ACHAV table_cont','content',2,'p_content','projeto_PL_parser.py',28),
-  ('arr_cont -> CPAR','arr_cont',1,'p_arr_cont','projeto_PL_parser.py',36),
-  ('arr_cont -> a_cont CPAR','arr_cont',2,'p_arr_cont','projeto_PL_parser.py',37),
-  ('a_cont -> content','a_cont',1,'p_a_cont','projeto_PL_parser.py',45),
-  ('a_cont -> a_cont COMMA content','a_cont',3,'p_a_cont','projeto_PL_parser.py',46),
-  ('table_cont -> CCHAV','table_cont',1,'p_table_cont','projeto_PL_parser.py',54),
-  ('table_cont -> t_cont CCHAV','table_cont',2,'p_table_cont','projeto_PL_parser.py',55),
-  ('t_cont -> KEY EQUALS t_value','t_cont',3,'p_t_cont','projeto_PL_parser.py',65),
-  ('t_cont -> t_cont COMMA KEY EQUALS t_value','t_cont',5,'p_t_cont','projeto_PL_parser.py',66),
-  ('t_value -> value','t_value',1,'p_t_value','projeto_PL_parser.py',74),
-  ('t_value -> APAR arr_cont','t_value',2,'p_t_value','projeto_PL_parser.py',75),
-  ('value -> STRING','value',1,'p_value','projeto_PL_parser.py',83),
-  ('value -> BOOL','value',1,'p_value','projeto_PL_parser.py',84),
-  ('value -> NULL','value',1,'p_value','projeto_PL_parser.py',85),
-  ('value -> INTEGER','value',1,'p_value','projeto_PL_parser.py',86),
-  ('value -> FLOAT','value',1,'p_value','projeto_PL_parser.py',87),
-  ('value -> BINARY','value',1,'p_value','projeto_PL_parser.py',88),
-  ('value -> OCTAL','value',1,'p_value','projeto_PL_parser.py',89),
-  ('value -> HEXA','value',1,'p_value','projeto_PL_parser.py',90),
-  ('value -> NAN','value',1,'p_value','projeto_PL_parser.py',91),
-  ('value -> INFINITY','value',1,'p_value','projeto_PL_parser.py',92),
-  ('value -> DATE','value',1,'p_value','projeto_PL_parser.py',93),
-  ('value -> TIME','value',1,'p_value','projeto_PL_parser.py',94),
-  ('value -> DATETIME','value',1,'p_value','projeto_PL_parser.py',95),
-  ('value -> MULTILINE_STRING','value',1,'p_value','projeto_PL_parser.py',96),
-  ('value -> STRING_LITERAL','value',1,'p_value','projeto_PL_parser.py',97),
-  ('value -> MULTILINE_STRING_LITERAL','value',1,'p_value','projeto_PL_parser.py',98),
+  ('converter -> fileElems','converter',1,'p_converter','projeto_PL_parser.py',7),
+  ('fileElems -> fileElems elem','fileElems',2,'p_atribs','projeto_PL_parser.py',14),
+  ('fileElems -> elem','fileElems',1,'p_atribs','projeto_PL_parser.py',15),
+  ('elem -> atrib','elem',1,'p_elem','projeto_PL_parser.py',23),
+  ('elem -> table','elem',1,'p_elem','projeto_PL_parser.py',24),
+  ('atrib -> KEY EQUALS content','atrib',3,'p_atrib','projeto_PL_parser.py',30),
+  ('content -> value','content',1,'p_content','projeto_PL_parser.py',34),
+  ('content -> APAR arr_cont','content',2,'p_content','projeto_PL_parser.py',35),
+  ('content -> ACHAV table_cont','content',2,'p_content','projeto_PL_parser.py',36),
+  ('arr_cont -> CPAR','arr_cont',1,'p_arr_cont','projeto_PL_parser.py',44),
+  ('arr_cont -> a_cont CPAR','arr_cont',2,'p_arr_cont','projeto_PL_parser.py',45),
+  ('a_cont -> content','a_cont',1,'p_a_cont','projeto_PL_parser.py',53),
+  ('a_cont -> a_cont COMMA content','a_cont',3,'p_a_cont','projeto_PL_parser.py',54),
+  ('table_cont -> CCHAV','table_cont',1,'p_table_cont','projeto_PL_parser.py',62),
+  ('table_cont -> t_cont CCHAV','table_cont',2,'p_table_cont','projeto_PL_parser.py',63),
+  ('t_cont -> KEY EQUALS t_value','t_cont',3,'p_t_cont','projeto_PL_parser.py',71),
+  ('t_cont -> t_cont COMMA KEY EQUALS t_value','t_cont',5,'p_t_cont','projeto_PL_parser.py',72),
+  ('t_value -> value','t_value',1,'p_t_value','projeto_PL_parser.py',82),
+  ('t_value -> APAR arr_cont','t_value',2,'p_t_value','projeto_PL_parser.py',83),
+  ('value -> STRING','value',1,'p_value','projeto_PL_parser.py',91),
+  ('value -> BOOL','value',1,'p_value','projeto_PL_parser.py',92),
+  ('value -> NULL','value',1,'p_value','projeto_PL_parser.py',93),
+  ('value -> INTEGER','value',1,'p_value','projeto_PL_parser.py',94),
+  ('value -> FLOAT','value',1,'p_value','projeto_PL_parser.py',95),
+  ('value -> BINARY','value',1,'p_value','projeto_PL_parser.py',96),
+  ('value -> OCTAL','value',1,'p_value','projeto_PL_parser.py',97),
+  ('value -> HEXA','value',1,'p_value','projeto_PL_parser.py',98),
+  ('value -> NAN','value',1,'p_value','projeto_PL_parser.py',99),
+  ('value -> INFINITY','value',1,'p_value','projeto_PL_parser.py',100),
+  ('value -> DATE','value',1,'p_value','projeto_PL_parser.py',101),
+  ('value -> TIME','value',1,'p_value','projeto_PL_parser.py',102),
+  ('value -> DATETIME','value',1,'p_value','projeto_PL_parser.py',103),
+  ('value -> MULTILINE_STRING','value',1,'p_value','projeto_PL_parser.py',104),
+  ('value -> STRING_LITERAL','value',1,'p_value','projeto_PL_parser.py',105),
+  ('value -> MULTILINE_STRING_LITERAL','value',1,'p_value','projeto_PL_parser.py',106),
+  ('table -> APAR tab_cont CPAR','table',3,'p_table','projeto_PL_parser.py',111),
+  ('table -> table atrib','table',2,'p_table','projeto_PL_parser.py',112),
+  ('tab_cont -> tab_cont DOT tab_cont2','tab_cont',3,'p_tab_cont','projeto_PL_parser.py',122),
+  ('tab_cont -> KEY','tab_cont',1,'p_tab_cont','projeto_PL_parser.py',123),
+  ('tab_cont -> STRING','tab_cont',1,'p_tab_cont','projeto_PL_parser.py',124),
+  ('tab_cont -> INTEGER','tab_cont',1,'p_tab_cont','projeto_PL_parser.py',125),
+  ('tab_cont2 -> KEY','tab_cont2',1,'p_tab_cont2','projeto_PL_parser.py',136),
+  ('tab_cont2 -> STRING','tab_cont2',1,'p_tab_cont2','projeto_PL_parser.py',137),
+  ('tab_cont2 -> INTEGER','tab_cont2',1,'p_tab_cont2','projeto_PL_parser.py',138),
 ]
