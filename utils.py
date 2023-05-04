@@ -121,3 +121,22 @@ def set_up_multiline_string(str):
             result = result[:-1]
 
         return result
+
+def merge_dicts(dict1, dict2):
+    result = dict1.copy()
+    for key, value in dict2.items():
+        if key in result:
+            if isinstance(value, dict) and isinstance(result[key], dict):
+                result[key] = merge_dicts(result[key], value)
+            elif isinstance(value, set) and isinstance(result[key], set):
+                result[key] |= value
+            else:
+                result[key] = value
+        else:
+            result[key] = value
+    return result
+
+def add_to_dict_chain(d, key, value):
+    while list(d.values()) != [] and isinstance(list(d.values())[-1], dict):
+        d = list(d.values())[-1]
+    d[key] = value
