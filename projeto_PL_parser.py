@@ -4,19 +4,27 @@ from projeto_PL_tokenizer import tokens
 import utils
 
 def p_converter(p):
-    'converter : atribs'
+    '''converter : fileElems
+    '''
     p[0] = dict()
     for d in p[1]:
-        p[0].update(d)
+        p[0] = utils.merge_dicts(p[0], d)
 
 def p_atribs(p):
-    '''atribs : atribs atrib
-                | atrib
+    '''fileElems : fileElems elem
+                | elem
     '''
     if len(p) == 2:
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[2]]
+
+def p_elem(p):
+    '''elem : atrib
+            | table
+    '''
+    #print(p[1])
+    p[0] = p[1]
 
 def p_atrib(p):
     'atrib : KEY EQUALS content'
@@ -99,6 +107,37 @@ def p_value(p):
     '''
     p[0] = p[1]
 
+def p_table(p):
+    '''table : APAR tab_cont CPAR 
+            | table atrib
+    '''
+    if len(p) == 4:
+        p[0] = p[2]
+    else:
+        key = next(iter(p[2]))
+        utils.add_to_dict_chain(p[1], key, p[2][key])
+        p[0] = p[1]
+
+def p_tab_cont(p):
+    '''tab_cont : tab_cont DOT tab_cont2
+                    | KEY
+                    | STRING
+                    | INTEGER
+    '''
+    if len(p) == 4:
+        key = next(iter(p[1])) 
+        #print(p[1])
+        p[1][key].update(p[3])
+        p[0] = p[1]
+    else:
+        p[0] = {p[1] : {}}
+
+def p_tab_cont2(p):
+    '''tab_cont2 : KEY
+                | STRING
+                | INTEGER
+    '''
+    p[0] = {p[1] : {}}
 
 def p_error(p):
 
