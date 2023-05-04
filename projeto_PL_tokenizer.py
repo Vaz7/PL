@@ -34,7 +34,8 @@ tokens = (
     'STRING_LITERAL',
     'MULTILINE_STRING_LITERAL',
     'ACHAV',
-    'CCHAV'
+    'CCHAV',
+    'DOT'
 )
 
 t_EQUALS = r'='
@@ -109,7 +110,7 @@ def t_STRING_LITERAL(t):
     return t
 
 def t_STRING(t):
-    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(\.("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|\.[a-zA-Z_0-9\-]+)*'
+    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_0-9\-]+)*'
     if t.value[0] != '\"':
         t.type = 'KEY'
         if not utils.validKey(t.value):
@@ -156,6 +157,10 @@ def t_FLOAT(t):
 def t_INTEGER(t):
     r'(\+|-)?\d+(_\d+)*([eE](\+|-)?\d+)?'
     t.value = t.value.replace('_','')
+    return t
+
+def t_DOT(t):
+    r'\.'
     return t
 
 t_ignore = ' \n\t\r'
