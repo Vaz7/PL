@@ -47,5 +47,56 @@
         ],
         "name": "null"
     },
-    "inline3": {}
+    "inline3": {},
+    "1": {
+        "testing": [
+            "2001-01-20"
+        ]
+    },
+    "owner": {
+        "name": "Tom Preston-Werner",
+        "dob": "2000-05-27T07:32:00.999999+08:00",
+        "deb": "1979-05-27",
+        "dab": "07:32:00Z"
+    },
+    "database": {
+        "server": "192.168.1.1",
+        "ports": [
+            "8000",
+            "8001",
+            "8002"
+        ],
+        "connection_max": "5000",
+        "enabled": "true",
+        "type": "null",
+        "sl": "'  string literal'"
+    },
+    "servers": {
+        "alpha": {
+            "ip": "10.0.0.2",
+            "dc": "eqdc10"
+        },
+        "delta": {
+            "ip": "10.0.0.1",
+            "dc": "eqdc10",
+            "inf": "+infinity",
+            "n": "-nan"
+        },
+        "beta": {
+            "ip": "10.0.0.2",
+            "dc": "eqdc10"
+        }
+    },
+    "clients": {
+        "data": [
+            [
+                "gamma",
+                "delta"
+            ],
+            [
+                "1",
+                "2"
+            ]
+        ]
+    }
 }
