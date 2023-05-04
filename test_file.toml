@@ -81,3 +81,6 @@ inline = { test = "test", more = "more", name = null }
 [[fruit]]
 name = "potato"
 flavour = 10
+
+[[fruit.size]]
+scale = "super potatu"
