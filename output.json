@@ -73,14 +73,14 @@
     },
     "servers": {
         "alpha": {
+            "delta": {
+                "ip": "10.0.0.1",
+                "dc": "eqdc10",
+                "inf": "+infinity",
+                "n": "-nan"
+            },
             "ip": "10.0.0.2",
             "dc": "eqdc10"
-        },
-        "delta": {
-            "ip": "10.0.0.1",
-            "dc": "eqdc10",
-            "inf": "+infinity",
-            "n": "-nan"
         },
         "beta": {
             "ip": "10.0.0.2",
@@ -97,6 +97,12 @@
                 "1",
                 "2"
             ]
-        ]
+        ],
+        "names": {
+            "surnames": {
+                "surname": "Lane"
+            },
+            "name": "John"
+        }
     }
 }
