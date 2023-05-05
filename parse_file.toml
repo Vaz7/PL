@@ -93,3 +93,10 @@ sl = '  string literal'
 
 [clients]
 data = [ ["gamma", "delta"], [1, 2] ]
+
+[clients.names]
+[clients.names.surnames]
+surname = "Lane"
+
+[clients.names]
+name = "John"
