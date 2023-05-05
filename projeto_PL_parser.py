@@ -23,7 +23,6 @@ def p_elem(p):
     '''elem : atrib
             | table
     '''
-    #print(p[1])
     p[0] = p[1]
 
 def p_atrib(p):
@@ -125,9 +124,8 @@ def p_tab_cont(p):
                     | INTEGER
     '''
     if len(p) == 4:
-        key = next(iter(p[1])) 
-        #print(p[1])
-        p[1][key].update(p[3])
+        key = next(iter(p[3])) 
+        utils.add_to_dict_chain(p[1], key, p[3][key])
         p[0] = p[1]
     else:
         p[0] = {p[1] : {}}
