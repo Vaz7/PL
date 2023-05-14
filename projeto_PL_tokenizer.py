@@ -35,6 +35,8 @@ tokens = (
     'MULTILINE_STRING_LITERAL',
     'ACHAV',
     'CCHAV',
+    'NEWLINE',
+    'COMMENT',
     'DOT'
 )
 
@@ -87,7 +89,7 @@ def t_multilineLiteral_MULTILINE_STRING_LITERAL(t):
 
 def t_COMMENT(t):
     r'\#.+'
-    pass
+    return t
 
 def t_BOOL(t):
     r'true|false'
@@ -110,7 +112,7 @@ def t_STRING_LITERAL(t):
     return t
 
 def t_STRING(t):
-    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_0-9\-]+)*'
+    r'(("[^"\\]*(\\.[^"\\]*)*"|\\".+\\")|[a-zA-Z_-][a-zA-Z_\-0-9]*)+'
     if t.value[0] != '\"':
         t.type = 'KEY'
         if not utils.validKey(t.value):
@@ -150,20 +152,29 @@ def t_HEXA(t):
     return t;
 
 def t_FLOAT(t):
-    r'(\+|-)?\d+(_\d+)*\.(\d+(_\d+)*)?([eE](\+|-)?\d+)?'
+    r'(\+|-)?\d+(_\d+)*\.(\d+(_\d+)*)([eE](\+|-)?\d+)?'
     t.value = t.value.replace('_','')
     return t
 
 def t_INTEGER(t):
-    r'(\+|-)?\d+(_\d+)*([eE](\+|-)?\d+)?'
+    r'(\+|-)?\d+(_\d+)*'
     t.value = t.value.replace('_','')
     return t
 
 def t_DOT(t):
     r'\.'
     return t
+    
+def t_multilineLiteral_multilineString_NEWLINE(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
-t_ignore = ' \n\t\r'
+def t_NEWLINE(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+    return t
+
+t_ignore = ' \t\r'
 t_multilineLiteral_ignore = ''
 t_multilineString_ignore = ''
 
