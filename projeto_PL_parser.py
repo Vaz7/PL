@@ -4,59 +4,122 @@ from projeto_PL_tokenizer import tokens
 import utils
 
 def p_converter(p):
-    '''converter : fileElems
+    '''converter : file
     '''
     p[0] = dict()
     for d in p[1]:
-        p[0] = utils.merge_dicts(p[0], d)
+        p[0] = utils.merge_elems(p[0], d)
 
-def p_atribs(p):
-    '''fileElems : fileElems elem
-                | elem
+def p_file(p):
+    '''file : file_lines last_line
+    '''
+    p[0] = p[1] + p[2]
+
+def p_file_lines(p):
+    '''file_lines : line
+             | file_lines line
     '''
     if len(p) == 2:
-        p[0] = [p[1]]
+        p[0] = p[1]
     else:
-        p[0] = p[1] + [p[2]]
+        p[0] = p[1] + p[2]
+
+def p_line_newline(p):
+    '''line : NEWLINE
+    '''
+    p[0] = []
+
+def p_line(p):
+    '''line : elem_newline
+    '''
+    p[0] = p[1]
+
+def p_last_line(p):
+    '''last_line : elem
+                 | empty
+    '''
+    p[0] = p[1]
+
+def p_elem_newline(p):
+    '''elem_newline : atrib NEWLINE 
+                    | table NEWLINE 
+                    | array_table NEWLINE 
+    '''
+    p[0] = [p[1]]
+
+def p_empty(p):
+    '''empty :'''
+    p[0] = []
 
 def p_elem(p):
     '''elem : atrib
             | table
+            | array_table
     '''
-    #print(p[1])
-    p[0] = p[1]
+    p[0] = [p[1]]
+
+def p_atrib_float(p):
+    '''atrib : FLOAT EQUALS content
+    '''
+    p[0] = utils.build_dict(p[1], p[3])
 
 def p_atrib(p):
-    'atrib : KEY EQUALS content'
+    '''atrib : key EQUALS content
+            | key EQUALS content COMMENT
+            | key DOT atrib
+    '''
     p[0] = {p[1] : p[3]}
 
 def p_content(p):
     '''content : value
                 | APAR arr_cont
+                | APAR NEWLINE arr_cont
                 | ACHAV table_cont
     '''
     if len(p) == 2:
         p[0] = p[1]
+    elif len(p) == 4:
+        p[0] = p[3]
     else:
         p[0] = p[2]
 
 def p_arr_cont(p):
     '''arr_cont : CPAR
                 | a_cont CPAR
+                | a_cont COMMA CPAR
+                | a_cont NEWLINE CPAR
+                | a_cont COMMA NEWLINE CPAR
     '''
     if len(p) == 2:
         p[0] = []
     else:
         p[0] = p[1]
 
+def p_a_cont_comments(p):
+    '''a_cont : COMMENT NEWLINE a_cont
+             | COMMENT NEWLINE
+    '''
+    if len(p) == 4:
+        p[0] = p[3]
+    else:
+        p[0] = []
+
+def p_a_cont_ending(p):
+    '''a_cont : a_cont COMMA NEWLINE
+    '''
+    p[0] = p[1]
+
 def p_a_cont(p):
     '''a_cont : content
-                | a_cont COMMA content
+                | a_cont COMMA a_cont
+                | a_cont COMMA NEWLINE a_cont 
     '''
-    if len(p) == 2:
+    if len(p) == 2: 
         p[0] = [p[1]]
+    elif len(p) == 5:
+        p[0] = p[1] + p[4]
     else:
-        p[0] = p[1] + [p[3]]
+        p[0] = p[1] + p[3]
 
 def p_table_cont(p):
     '''table_cont : CCHAV
@@ -68,8 +131,8 @@ def p_table_cont(p):
         p[0] = p[1]
 
 def p_t_cont(p):
-    '''t_cont : KEY EQUALS t_value
-              | t_cont COMMA KEY EQUALS t_value
+    '''t_cont : key EQUALS content
+              | t_cont COMMA key EQUALS content
     '''
     if len(p) == 4:
         p[0] = {p[1] : p[3]}
@@ -77,15 +140,13 @@ def p_t_cont(p):
         p[1].update({p[3] : p[5]})
         p[0] = p[1]
 
-
-def p_t_value(p):
-    ''' t_value : value
-                | APAR arr_cont
+def p_key(p):
+    '''key : KEY
+            | INTEGER
+            | STRING
+            | STRING_LITERAL
     '''
-    if len(p) == 2:
-        p[0] = p[1]
-    elif len(p) == 3:
-        p[0] = p[2]
+    p[0] = p[1]
 
 def p_value(p):
     '''value : STRING
@@ -107,37 +168,69 @@ def p_value(p):
     '''
     p[0] = p[1]
 
+def p_table_comments(p):
+    '''table : table NEWLINE COMMENT
+    '''
+    p[0] = p[1]
+
+def p_table_elem(p):
+    '''table : table NEWLINE atrib
+    '''
+    key = next(iter(p[3]))
+    utils.add_to_dict_chain(p[1], key, p[3][key])
+    p[0] = p[1]
+
+# TODO: Resolver problema de ter comments no meio de tables / array the tabelas, isto parte tudo! (ver nos arrays tbm)
 def p_table(p):
     '''table : APAR tab_cont CPAR 
-            | table atrib
+            | APAR tab_cont CPAR COMMENT
     '''
-    if len(p) == 4:
-        p[0] = p[2]
-    else:
-        key = next(iter(p[2]))
-        utils.add_to_dict_chain(p[1], key, p[2][key])
-        p[0] = p[1]
+    p[0] = p[2]
+
+def p_tab_cont_float(p):
+    '''tab_cont : FLOAT
+    '''
+    p[0] = utils.build_dict(p[1], {})
 
 def p_tab_cont(p):
-    '''tab_cont : tab_cont DOT tab_cont2
-                    | KEY
-                    | STRING
-                    | INTEGER
+    '''tab_cont : tab_cont DOT tab_cont
+                | key
     '''
     if len(p) == 4:
-        key = next(iter(p[1])) 
-        #print(p[1])
-        p[1][key].update(p[3])
+        key = next(iter(p[3])) 
+        utils.add_to_dict_chain(p[1], key, p[3][key])
         p[0] = p[1]
     else:
         p[0] = {p[1] : {}}
 
-def p_tab_cont2(p):
-    '''tab_cont2 : KEY
-                | STRING
-                | INTEGER
+def p_array_table_comments(p):
+    '''array_table : array_table NEWLINE COMMENT
     '''
-    p[0] = {p[1] : {}}
+    p[0] = p[1]
+
+def p_array_table_elem(p):
+    '''array_table : array_table NEWLINE atrib
+    '''
+    key = next(iter(p[3]))
+    utils.add_to_array_chain(list(p[1].values())[-1][-1], key, p[3][key])
+    p[0] = p[1]
+
+def p_array_table(p):
+    '''array_table : APAR2 arr_table_cont CPAR2
+                    | APAR2 arr_table_cont CPAR2 COMMENT
+    '''
+    p[0] = p[2]
+
+def p_arr_table_cont(p):
+    '''arr_table_cont : arr_table_cont DOT arr_table_cont
+                    | key
+    '''
+    if len(p) == 4:
+        key = next(iter(p[3]))
+        utils.add_to_array_chain(list(p[1].values())[-1][-1], key, p[3][key])
+        p[0] = p[1]
+    else:
+        p[0] = {p[1] : [dict()]}
 
 def p_error(p):
 
@@ -158,7 +251,7 @@ with open('parse_file.toml') as file:
 
 myjson = parser.parse(data, debug=0)
 
-print(myjson)
+#print(myjson)
 
 with open('output.json', 'w') as f:
     json.dump(myjson, f, indent=4, separators=(',', ': '), ensure_ascii=False)
