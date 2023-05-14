@@ -123,20 +123,128 @@ def set_up_multiline_string(str):
         return result
 
 def merge_dicts(dict1, dict2):
-    result = dict1.copy()
     for key, value in dict2.items():
-        if key in result:
-            if isinstance(value, dict) and isinstance(result[key], dict):
-                result[key] = merge_dicts(result[key], value)
-            elif isinstance(value, set) and isinstance(result[key], set):
-                result[key] |= value
+        if key in dict1:
+            if isinstance(value, dict) and isinstance(dict1[key], dict):
+                dict1[key] = merge_dicts(dict1[key], value)
+            elif isinstance(value, set) and isinstance(dict1[key], set):
+                dict1[key] |= value
             else:
-                result[key] = value
+                dict1[key] = value
         else:
-            result[key] = value
+            dict1[key] = value
+    return dict1
+
+def is_array_table(value):
+    for elem in value:
+        if isinstance(elem, dict):
+            return True
+            
+    return False
+
+def merge_elems(dict1, dict2):
+    #print(dict1)
+    #print(dict2)
+    #print('*'*50)
+    for key, value in dict2.items():
+        if key in dict1:
+            #check both types
+            if isinstance(value, list) and is_array_table(value) and isinstance(dict1[key], list) and is_array_table(dict1[key]):
+                dict1 = join_toml_array_tables(dict1, {key : value})
+            elif isinstance(value, dict) and isinstance(dict1[key], list) and is_array_table(dict1[key]):
+                print("aqui")
+                print(dict1[key])
+                print(value)
+                print('-'*40)
+                dict1[key][-1] = join_toml_array_tables(dict1[key][-1], value)
+                print(dict1[key])
+            elif isinstance(value, dict) and isinstance(dict1[key], dict):
+                dict1[key] = merge_dicts(dict1[key], value)
+                pass
+            elif isinstance(value, set) and isinstance(dict1[key], set):
+                dict1[key] |= value
+            else:
+                dict1[key] = value
+        else:
+            dict1[key] = value
+
+    return dict1
+
+def build_dict(keys, value):
+    temp = keys.split('.')
+    result = dict()
+
+    for elem in temp:
+        if elem != temp[-1]:
+            add_to_dict_chain(result, elem, {})
+        else:
+            add_to_dict_chain(result, elem, value)
+
     return result
 
 def add_to_dict_chain(d, key, value):
     while list(d.values()) != [] and isinstance(list(d.values())[-1], dict):
         d = list(d.values())[-1]
     d[key] = value
+
+def add_to_array_chain(d, key, value):
+    while list(d.values()) != [] and isinstance(list(d.values())[-1][-1], dict):
+        d = list(d.values())[-1][-1]
+    d[key] = value
+
+def get_key_index(key, d):
+    index = 0;
+    
+    for elem in d:
+        if key in elem.keys():
+            return index
+
+        index += 1
+    
+    return -1
+
+def join_array_tables(dict1, dict2):
+    
+    for key in dict2.keys():
+        if isinstance(dict1, dict) and key in dict1.keys():
+            if len(dict2[key]) == 1 and dict2[key][0] != {} and isinstance(list(dict2[key][0].values())[-1], list):
+                dict1[key] = join_array_tables(dict1[key], dict2[key][0])
+            else:
+                dict1[key] = dict1[key] + dict2[key] # TODO: Rever esta parte e olhar para o último exemplo do parser file (ver documentação do toml agane)
+        elif isinstance(dict1, dict):
+            dict1[key] = dict2[key]
+        else:
+            index = get_key_index(key, dict1)
+            if index < 0:
+                if isinstance(dict2[key], list):
+                    dict1[-1][key] = dict2[key]
+                else:
+                    dict1.append(dict2) 
+            else:
+                if isinstance(dict2[key], list):
+                    dict1[index][key] = join_array_tables(dict1[index][key], dict2[key][0])
+                else:
+                    dict1.append(dict2)
+
+    return dict1
+
+# TODO: Rever esta função para o exemplo da wakanda
+def join_toml_array_tables(dict1, dict2):
+    for key in dict2.keys():
+        if key in dict1.keys():
+            if len(dict2[key]) == 1 and isinstance(dict2[key], list) and dict2[key][0] != {} and isinstance(list(dict2[key][0].values())[-1], list):
+                if isinstance(dict1[key], list):
+                    dict1[key][-1] = join_toml_array_tables(dict1[key][-1], dict2[key][0])
+                else:
+                    dict1[key] = join_toml_array_tables(dict1[key], dict2[key][0])
+            else:
+                if isinstance(dict2[key], list):
+                    dict1[key].append(dict2[key][0])
+                elif isinstance(dict1[key], list):
+                    dict1[key][-1].update(dict2[key])
+                else:
+                    dict1[key].update(dict2[key])
+        else:
+            dict1[key] = dict2[key]
+
+    return dict1
