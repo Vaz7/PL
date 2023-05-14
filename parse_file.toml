@@ -1,3 +1,5 @@
+
+
 test = 12_23_34.45_56_67e-2
 
 binario = 0b11011011010
@@ -11,8 +13,24 @@ my sweet
 friend
 '''
 
-# The following strings are byte-for-byte equivalent:
+orange = "Orange"
+physical.color = "orange"
+physical.shape = "round"
+site."google.com" = true
+
+1234 = "value"
+"127.0.0.1" = "value"
+"character encoding" = "value"
+"ʎǝʞ" = "value"
+'key2' = "value"
+'quoted "value"' = "value"
+
+[3.14159]
+actual_pi = "pi"
+
+str = "I'm a string. \"You can quote me\". Name\tJos\u00E9\nLocation\tSF."
 str1 = "The quick brown fox jumps over the lazy dog."
+# The following strings are byte-for-byte equivalent:
 
 str2 = """
 The quick brown \
@@ -44,11 +62,26 @@ dab = 07:32:00Z
 
 testing = [2001-01-20]
 
+bare-key = "henlo there"
+
+
 data = [ ["gamma", "delta"], [1, 2] ]
 hosts = [
   "alpha",
   "omega"
 ]
+
+array_testing = [
+  1, 2, 3, 4,       # Cheeky comment
+  5, 6, 7, 8,
+  # another one
+  9, 10, 11, 12, #and another one
+  # last one
+]
+
+points = [ { x = 1, y = 2, z = 3 },
+           { x = 7, y = 8, z = 9 },
+           { x = 2, y = 4, z = 8 } ]
 
 inline = { test = "test", more = "more", name = null }
 inline2 = { test = "test", more = ["more", "more2", "potato", "putato"], name = null }
@@ -57,8 +90,10 @@ inline2 = { test = "test", more = ["more", "more2", "potato", "putato"], name = 
 inline3 = { }
 
 
+inline4 = { test = "test", new = { test = "test", more = ["more", "more2", "potato", "putato"], name = null },more = "more", name = null}
+
 [1]
-testing = [2001-01-20]
+testing = [2001-01-20,]
 
 ["owner"]
 name = "Tom Preston-Werner"
@@ -93,3 +128,68 @@ sl = '  string literal'
 
 [clients]
 data = [ ["gamma", "delta"], [1, 2] ]
+
+[[fruit]]
+name = "potato"
+flavour = 10
+
+[[fruit.size]]
+scale = "super potatu"
+
+
+[[commando.tiger.mafia]]
+name = "potato"
+flavour = 10
+
+[[commando.tiger.mafia]]
+scale = "super potatu"
+
+
+[[fruit]]
+scale = "super potatu"
+
+[[products]]
+name = "Hammer"
+sku = 738594937
+
+[[products]]  # empty table within the array
+
+[[products]]
+# MORE COMMENTS
+name = "Nail"
+sku = 284758393
+
+color = "gray"
+
+[[wakanda]]
+name = "apple"
+
+[wakanda.physical.melon]  # subtable
+name = "melon"
+
+[wakanda.physical]  # subtable
+color = "red"
+shape = "round"
+
+[[wakanda.varieties]]  # nested array of tables
+name = "red delicious"
+
+[wakanda.varieties.test]
+test = "sou um teste"
+
+[[wakanda.varieties]]
+name = "granny smith"
+
+
+[[wakanda]]
+name = "banana"
+
+[[wakanda.varieties]]
+name = "plantain"
+
+[banana] # NEW COMMENT
+# COMMENT
+name = "sou uma banana"
+
+[testamento]
+verso = "salmo 404"
