@@ -6,48 +6,116 @@
     "multiline_literal_empty": "",
     "multiline_literal_inline": "Hello there! General Kenobi",
     "multiline_literal": "Hello there\nmy sweet\nfriend",
-    "str1": "The quick brown fox jumps over the lazy dog.",
-    "str2": "The quick brown fox jumps over the lazy dog.",
-    "str3": "The quick brown fox jumps over the lazy dog.",
-    "str4": "This is\na string with alot of stuff\n      init",
-    "title": "TOML \\\"QUOTE\\\" Example",
-    "name": "Tom Preston-Werner",
-    "dob": "2000-05-27T07:32:00.999999+08:00",
-    "deb": "1979-05-27",
-    "dab": "07:32:00Z",
-    "testing": [
-        "2001-01-20"
-    ],
-    "data": [
-        [
-            "gamma",
-            "delta"
-        ],
-        [
-            "1",
-            "2"
-        ]
-    ],
-    "hosts": [
-        "alpha",
-        "omega"
-    ],
-    "inline": {
-        "test": "test",
-        "more": "more",
-        "name": "null"
+    "orange": "Orange",
+    "physical": {
+        "color": "orange",
+        "shape": "round"
     },
-    "inline2": {
-        "test": "test",
-        "more": [
-            "more",
-            "more2",
-            "potato",
-            "putato"
-        ],
-        "name": "null"
+    "site": {
+        "google.com": "true"
     },
-    "inline3": {},
+    "1234": "value",
+    "127.0.0.1": "value",
+    "character encoding": "value",
+    "ʎǝʞ": "value",
+    "'key2'": "value",
+    "'quoted \"value\"'": "value",
+    "3": {
+        "14159": {
+            "actual_pi": "pi",
+            "str": "I'm a string. \\\"You can quote me\\\". Name\\tJos\\u00E9\\nLocation\\tSF.",
+            "str1": "The quick brown fox jumps over the lazy dog.",
+            "str2": "The quick brown fox jumps over the lazy dog.",
+            "str3": "The quick brown fox jumps over the lazy dog.",
+            "str4": "This is\na string with alot of stuff\n      init",
+            "title": "TOML \\\"QUOTE\\\" Example",
+            "name": "Tom Preston-Werner",
+            "dob": "2000-05-27T07:32:00.999999+08:00",
+            "deb": "1979-05-27",
+            "dab": "07:32:00Z",
+            "testing": [
+                "2001-01-20"
+            ],
+            "bare-key": "henlo there",
+            "data": [
+                [
+                    "gamma",
+                    "delta"
+                ],
+                [
+                    "1",
+                    "2"
+                ]
+            ],
+            "hosts": [
+                "alpha",
+                "omega"
+            ],
+            "array_testing": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12"
+            ],
+            "points": [
+                {
+                    "x": "1",
+                    "y": "2",
+                    "z": "3"
+                },
+                {
+                    "x": "7",
+                    "y": "8",
+                    "z": "9"
+                },
+                {
+                    "x": "2",
+                    "y": "4",
+                    "z": "8"
+                }
+            ],
+            "inline": {
+                "test": "test",
+                "more": "more",
+                "name": "null",
+                "inline2": {
+                    "test": "test",
+                    "more": [
+                        "more",
+                        "more2",
+                        "potato",
+                        "putato"
+                    ],
+                    "name": "null",
+                    "inline3": {
+                        "inline4": {
+                            "test": "test",
+                            "new": {
+                                "test": "test",
+                                "more": [
+                                    "more",
+                                    "more2",
+                                    "potato",
+                                    "putato"
+                                ],
+                                "name": "null"
+                            },
+                            "more": "more",
+                            "name": "null"
+                        }
+                    }
+                }
+            }
+        }
+    },
     "1": {
         "testing": [
             "2001-01-20"
@@ -97,12 +165,86 @@
                 "1",
                 "2"
             ]
-        ],
-        "names": {
-            "surnames": {
-                "surname": "Lane"
-            },
-            "name": "John"
+        ]
+    },
+    "fruit": [
+        {
+            "name": "potato",
+            "flavour": "10",
+            "size": [
+                {
+                    "scale": "super potatu"
+                }
+            ]
+        },
+        {
+            "scale": "super potatu"
         }
+    ],
+    "commando": [
+        {
+            "tiger": [
+                {
+                    "mafia": [
+                        {
+                            "name": "potato",
+                            "flavour": "10"
+                        },
+                        {
+                            "scale": "super potatu"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "products": [
+        {
+            "name": "Hammer",
+            "sku": "738594937"
+        },
+        {},
+        {
+            "name": "Nail",
+            "sku": "284758393",
+            "color": "gray"
+        }
+    ],
+    "wakanda": [
+        {
+            "name": "apple",
+            "physical": {
+                "melon": {
+                    "name": "melon"
+                },
+                "color": "red",
+                "shape": "round"
+            },
+            "varieties": [
+                {
+                    "name": "red delicious",
+                    "test": {
+                        "test": "sou um teste"
+                    }
+                },
+                {
+                    "name": "granny smith"
+                }
+            ]
+        },
+        {
+            "name": "banana",
+            "varieties": [
+                {
+                    "name": "plantain"
+                }
+            ]
+        }
+    ],
+    "banana": {
+        "name": "sou uma banana"
+    },
+    "testamento": {
+        "verso": "salmo 404"
     }
 }
