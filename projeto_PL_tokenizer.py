@@ -182,21 +182,4 @@ def t_ANY_error(t):
     print(f"Caracter inválido {t.value[0]}")
     t.lexer.skip(1)
 
-#data = None
-#
-#with open('parse_file.toml') as file:
-#    data = file.read()
-
 lexer = lex.lex()
-#lexer.input(data)
-#
-#while True:
-#    try:
-#        tok = lexer.token()
-#
-#        if not tok:
-#            break
-#        
-#        print(tok)
-#    except SyntaxError as e:
-#        print(f"Erro: {str(e)}")

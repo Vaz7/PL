@@ -180,7 +180,6 @@ def p_table_elem(p):
     utils.add_to_dict_chain(p[1], key, p[3][key])
     p[0] = p[1]
 
-# TODO: Resolver problema de ter comments no meio de tables / array the tabelas, isto parte tudo! (ver nos arrays tbm)
 def p_table(p):
     '''table : APAR tab_cont CPAR 
             | APAR tab_cont CPAR COMMENT
@@ -250,8 +249,6 @@ with open('parse_file.toml') as file:
     data = file.read()
 
 myjson = parser.parse(data, debug=0)
-
-#print(myjson)
 
 with open('output.json', 'w') as f:
     json.dump(myjson, f, indent=4, separators=(',', ': '), ensure_ascii=False)

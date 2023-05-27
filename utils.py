@@ -143,9 +143,6 @@ def is_array_table(value):
     return False
 
 def merge_elems(dict1, dict2):
-    #print(dict1)
-    #print(dict2)
-    #print('*'*50)
     for key, value in dict2.items():
         if key in dict1:
             #check both types
