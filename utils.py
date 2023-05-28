@@ -2,7 +2,6 @@ import datetime
 import re
 import json
 
-
 def validate_json_file(file_path):
     try:
         with open(file_path, 'r') as file:
@@ -140,7 +139,7 @@ def merge_dicts(dict1, dict2):
             elif isinstance(value, set) and isinstance(dict1[key], set):
                 dict1[key] |= value
             else:
-                dict1[key] = value
+                raise SyntaxError(f"KEY {key} has been reinitialized with the VALUE {value}")
         else:
             dict1[key] = value
     return dict1
@@ -153,28 +152,17 @@ def is_array_table(value):
     return False
 
 def merge_elems(dict1, dict2):
-    #print(dict1)
-    #print(dict2)
-    #print('*'*50)
     for key, value in dict2.items():
         if key in dict1:
             #check both types
             if isinstance(value, list) and is_array_table(value) and isinstance(dict1[key], list) and is_array_table(dict1[key]):
                 dict1 = join_toml_array_tables(dict1, {key : value})
             elif isinstance(value, dict) and isinstance(dict1[key], list) and is_array_table(dict1[key]):
-                print("aqui")
-                print(dict1[key])
-                print(value)
-                print('-'*40)
                 dict1[key][-1] = join_toml_array_tables(dict1[key][-1], value)
-                print(dict1[key])
             elif isinstance(value, dict) and isinstance(dict1[key], dict):
                 dict1[key] = merge_dicts(dict1[key], value)
-                pass
             elif isinstance(value, set) and isinstance(dict1[key], set):
                 dict1[key] |= value
-            else:
-                dict1[key] = value
         else:
             dict1[key] = value
 
@@ -238,7 +226,6 @@ def join_array_tables(dict1, dict2):
 
     return dict1
 
-# TODO: Rever esta função para o exemplo da wakanda
 def join_toml_array_tables(dict1, dict2):
     for key in dict2.keys():
         if key in dict1.keys():

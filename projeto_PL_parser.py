@@ -8,7 +8,10 @@ def p_converter(p):
     '''
     p[0] = dict()
     for d in p[1]:
-        p[0] = utils.merge_elems(p[0], d)
+        try:
+            p[0] = utils.merge_elems(p[0], d)
+        except SyntaxError as err:
+           print(err) 
 
 def p_file(p):
     '''file : file_lines last_line
@@ -243,15 +246,3 @@ def p_error(p):
                   p))
 
 parser = yacc.yacc()
-
-data = None
-
-with open('parse_file.toml') as file:
-    data = file.read()
-
-myjson = parser.parse(data, debug=0)
-
-#print(myjson)
-
-with open('output.json', 'w') as f:
-    json.dump(myjson, f, indent=4, separators=(',', ': '), ensure_ascii=False)
