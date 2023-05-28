@@ -1,5 +1,15 @@
 import datetime
 import re
+import json
+
+
+def validate_json_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            json.load(file)
+        print("The JSON file is valid.")
+    except (ValueError, FileNotFoundError) as e:
+        print("The JSON file is not valid:", str(e))
 
 def validDate(date):
     date_splitted = date.split('-')
